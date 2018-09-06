@@ -1,20 +1,16 @@
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+package ETL;
 
-import java.io.*;
+import org.apache.poi.ss.usermodel.*;
+
+import java.io.File;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
 public final class Cleaner {
-
-    private static final String LOCATION_EXCEL="./excel/test Napoli 20-10-2017.xlsx";
-
-    private static final String LOCATION_CSV="./excel/test Napoli 20-10-2017.csv";
 
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
 
@@ -31,60 +27,50 @@ public final class Cleaner {
 
     FormulaEvaluator evaluator;
 
-    public void loadFile(){
-        excelFile=new File(LOCATION_EXCEL);
-        try {
-            workbook= new XSSFWorkbook(excelFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-        sheet=workbook.getSheetAt(0);
-        evaluator= workbook.getCreationHelper().createFormulaEvaluator();
+    public void setCsvFile(PrintWriter csvFile) {
+        this.csvFile = csvFile;
     }
 
-    private void createCSV(){
-        try {
-            csvFile=new PrintWriter(LOCATION_CSV, "UTF-8");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public void setWorkbook(Workbook workbook) {
+        this.workbook = workbook;
     }
 
     public void clean(){
+        sheet=workbook.getSheetAt(0);
+        evaluator= workbook.getCreationHelper().createFormulaEvaluator();
         Row lastRow=null, row=null;
         removeBadRows();
         Iterator<Row> rowIterator=sheet.rowIterator();
-        createCSV();
         metaDataOnCSV(rowIterator.next(),rowIterator.next());
         while (rowIterator.hasNext()) {
             row=rowIterator.next();
             processRow(row,lastRow);
-            lastRow=row;
         }
-            csvFile.close();
+        csvFile.close();
     }
 
     private void metaDataOnCSV(Row row1, Row row2){
         StringBuilder builder=new StringBuilder();
         for (int i = 0; i < row1.getLastCellNum(); i++) {
-            if (i==17)
-                continue;
             builder.append(DATA_FORMATTER.formatCellValue(row1.getCell(i)));
+            if (i==24){
+                builder.append("- [kW]");
+            }else
+                builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
             builder.append(';');
         }
         csvFile.println(builder.toString());
 
-        builder=new StringBuilder();
+       /* builder=new StringBuilder();
         for (int i = 0; i < row2.getLastCellNum(); i++) {
             if (i==17)
                 continue;
-            builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
+            else if (i==24){
+                builder.append("[kW]");
+            }else
+                builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
             builder.append(';');
-        }
+        }*/
         csvFile.println(builder.toString());
     }
 
@@ -111,7 +97,7 @@ public final class Cleaner {
                     return;
                 try {
                     value=addSecond(value);
-                   row.createCell(0,CellType.STRING).setCellValue(value);
+                    row.createCell(0,CellType.STRING).setCellValue(value);
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -138,12 +124,8 @@ public final class Cleaner {
                 currentCell.setCellValue(value);
             }
 
-            //VELOCITY=SPEED
-            if (i==17)
-                continue;
-
             //CHECK NEGATIVE VALUE
-            if  (i!=11 && i!=16 && Arrays.binarySearch(value.toCharArray(),'-')>=0)
+            if  (i!=11 && i!=16 && value.toCharArray()[0]=='-')
                 return;
             builder.append(value);
             builder.append(';');
