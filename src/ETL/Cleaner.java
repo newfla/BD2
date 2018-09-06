@@ -2,7 +2,6 @@ package ETL;
 
 import org.apache.poi.ss.usermodel.*;
 
-import java.io.File;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,15 +16,13 @@ public final class Cleaner {
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT= new SimpleDateFormat("hh:mm:ss");
 
 
-    private File excelFile;
-
     private PrintWriter csvFile;
 
     private Workbook workbook;
 
     private Sheet sheet;
 
-    FormulaEvaluator evaluator;
+    private FormulaEvaluator evaluator;
 
     public void setCsvFile(PrintWriter csvFile) {
         this.csvFile = csvFile;
@@ -38,7 +35,7 @@ public final class Cleaner {
     public void clean(){
         sheet=workbook.getSheetAt(0);
         evaluator= workbook.getCreationHelper().createFormulaEvaluator();
-        Row lastRow=null, row=null;
+        Row lastRow=null, row;
         removeBadRows();
         Iterator<Row> rowIterator=sheet.rowIterator();
         metaDataOnCSV(rowIterator.next(),rowIterator.next());
@@ -53,14 +50,14 @@ public final class Cleaner {
         StringBuilder builder=new StringBuilder();
         for (int i = 0; i < row1.getLastCellNum(); i++) {
             builder.append(DATA_FORMATTER.formatCellValue(row1.getCell(i)));
-            if (i==24){
-                builder.append("- [kW]");
-            }else
+            if (i!=0 && i!=6)
+                builder.append("_");
+            if (i==24)
+                builder.append("[kW]");
+            else
                 builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
             builder.append(';');
         }
-        csvFile.println(builder.toString());
-
        /* builder=new StringBuilder();
         for (int i = 0; i < row2.getLastCellNum(); i++) {
             if (i==17)
@@ -125,7 +122,7 @@ public final class Cleaner {
             }
 
             //CHECK NEGATIVE VALUE
-            if  (i!=11 && i!=16 && value.toCharArray()[0]=='-')
+            if  (i!=11 && i!=16  && !value.isEmpty() && value.toCharArray()[0]=='-')
                 return;
             builder.append(value);
             builder.append(';');

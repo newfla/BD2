@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -23,16 +24,20 @@ public final class Main {
             cleaner.clean();
             Transformer transformer=new Transformer();
             transformer.setReader(loadCSV());
+            transformer.transform();
+            transformer.setCsvFile(createCSV());
 
     }
 
 
     private static PrintWriter createCSV(){
         try {
-           return new PrintWriter(LOCATION_CSV, "UTF-8");
+           return new PrintWriter(LOCATION_CSV, StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -50,8 +55,7 @@ public final class Main {
         return null;
     }
 
-    private static Reader loadCSV(){
-
+    private static BufferedReader loadCSV(){
         try {
             return Files.newBufferedReader(Paths.get(LOCATION_CSV));
         } catch (IOException e) {
