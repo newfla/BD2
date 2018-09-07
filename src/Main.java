@@ -5,7 +5,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -17,27 +16,32 @@ public final class Main {
 
     private static final int NUM_TEST=400;
 
-    public static void main(String[] args) {
-            Cleaner cleaner =new Cleaner();
+    public static void main(String[] args) throws IOException {
+        Multiplier multiplier = new Multiplier();
+        multiplier.setWorkbook(loadEXCEL());
+        Workbook wb = multiplier.duplicate();
+
+        wb.close();
+        /*FileOutputStream out = new FileOutputStream(LOCATION_EXCEL);
+        wb.write(out);
+        out.close();*/
+
+            /*Cleaner cleaner =new Cleaner();
             cleaner.setWorkbook(loadEXCEL());
             cleaner.setCsvFile(createCSV());
             cleaner.clean();
             Transformer transformer=new Transformer();
-            transformer.setReader(loadCSV());
-            transformer.transform();
-            transformer.setCsvFile(createCSV());
+            transformer.setReader(loadCSV());*/
 
     }
 
 
     private static PrintWriter createCSV(){
         try {
-           return new PrintWriter(LOCATION_CSV, StandardCharsets.UTF_8);
+           return new PrintWriter(LOCATION_CSV, "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -55,7 +59,8 @@ public final class Main {
         return null;
     }
 
-    private static BufferedReader loadCSV(){
+    private static Reader loadCSV(){
+
         try {
             return Files.newBufferedReader(Paths.get(LOCATION_CSV));
         } catch (IOException e) {
