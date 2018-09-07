@@ -8,6 +8,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 public final class Main {
 
@@ -18,6 +19,8 @@ public final class Main {
     private static final int NUM_TEST=400;
 
     public static void main(String[] args) {
+
+            Long startTime= System.currentTimeMillis();
             Cleaner cleaner =new Cleaner();
             cleaner.setWorkbook(loadEXCEL());
             cleaner.setCsvFile(createCSV());
@@ -26,6 +29,8 @@ public final class Main {
             transformer.setReader(loadCSV());
             transformer.transform();
             transformer.setCsvFile(createCSV());
+
+            System.out.println("Tempo impiegato: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime));
 
     }
 

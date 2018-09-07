@@ -33,15 +33,25 @@ public final class Cleaner {
     }
 
     public void clean(){
-        sheet=workbook.getSheetAt(0);
         evaluator= workbook.getCreationHelper().createFormulaEvaluator();
         Row lastRow=null, row;
-        removeBadRows();
-        Iterator<Row> rowIterator=sheet.rowIterator();
+        Iterator<Row> rowIterator=workbook.getSheetAt(0).rowIterator();
         metaDataOnCSV(rowIterator.next(),rowIterator.next());
-        while (rowIterator.hasNext()) {
-            row=rowIterator.next();
-            processRow(row,lastRow);
+        for (Sheet actualSheet:workbook) {
+            //Remove bad rows from each sheet
+            sheet=actualSheet;
+            removeBadRows();
+
+            //Skip header
+            rowIterator=sheet.rowIterator();
+            rowIterator.next();
+            rowIterator.next();
+
+            //Process Row data
+            while (rowIterator.hasNext()) {
+                row=rowIterator.next();
+                processRow(row,lastRow);
+            }
         }
         csvFile.close();
     }
@@ -52,22 +62,12 @@ public final class Cleaner {
             builder.append(DATA_FORMATTER.formatCellValue(row1.getCell(i)));
             if (i!=0 && i!=6)
                 builder.append("_");
-            if (i==24)
+            if (i==23)
                 builder.append("[kW]");
             else
                 builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
             builder.append(';');
         }
-       /* builder=new StringBuilder();
-        for (int i = 0; i < row2.getLastCellNum(); i++) {
-            if (i==17)
-                continue;
-            else if (i==24){
-                builder.append("[kW]");
-            }else
-                builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
-            builder.append(';');
-        }*/
         csvFile.println(builder.toString());
     }
 
@@ -82,11 +82,9 @@ public final class Cleaner {
         for (int i = 0; i < row.getLastCellNum(); i++) {
             Cell currentCell=row.getCell(i);
             if (currentCell!=null && currentCell.getCellTypeEnum() == CellType.FORMULA)
-                value=String.valueOf(currentCell.getNumericCellValue());
+               value= Double.toString(evaluator.evaluate(currentCell).getNumberValue());
             else
                 value=DATA_FORMATTER.formatCellValue(currentCell);
-
-
             //CHECK ABSOLUTE
             if (i==0 && value.isEmpty() && lastRow!=null){
                 value=DATA_FORMATTER.formatCellValue(lastRow.getCell(0));
@@ -124,6 +122,8 @@ public final class Cleaner {
             //CHECK NEGATIVE VALUE
             if  (i!=11 && i!=16  && !value.isEmpty() && value.toCharArray()[0]=='-')
                 return;
+            if (i!=15 && i!=16)
+                value=value.replace('.',',');
             builder.append(value);
             builder.append(';');
         }

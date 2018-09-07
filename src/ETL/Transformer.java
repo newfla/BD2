@@ -50,11 +50,12 @@ public final class Transformer {
             header=header.replace("Latitude_[N/S];","");
             header=header.replace("Longitude_[W/E];","");
             header=header.replace("absolute","StartDate");
-            size-=3;
+            size--;
 
             //Add header to final CSV
             builder=new StringBuilder();
             builder.append(header);
+            builder.append('\n');
             List<CSVRecord>records= csvParser.getRecords();
             String time=cleanTime(records.get(0).get(0));
 
@@ -64,7 +65,7 @@ public final class Transformer {
                 for (int i = 1; i < size; i++) {
 
                     //Remove latitude and longitude from every row
-                    if (i==15 || i==16)
+                    if (i==14 || i==15)
                         continue;
 
                     builder.append(record.get(i));
