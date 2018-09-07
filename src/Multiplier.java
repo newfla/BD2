@@ -1,53 +1,42 @@
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Random;
 
 public class Multiplier {
-    private Workbook workbook;
-    private Sheet sheet;
 
-    private static final DataFormatter DATA_FORMATTER = new DataFormatter();
+    private XSSFWorkbook workbook;
 
-    public void setWorkbook(Workbook workbook) {
+    public void setWorkbook(XSSFWorkbook workbook) {
         this.workbook = workbook;
     }
 
-    public Workbook duplicate(){
-        sheet = workbook.getSheetAt(0);
-        int dim = sheet.getLastRowNum(), i, j, rowDim;
-        Row currRow, newRow;
-        String value;
-        Cell cell;
-        Date fictitiousDate = createRandomDate();
 
-        //Aggiunge una colonna
-        for (i = 0; i < dim; i++) {
+    public String duplicate(){
+        Cell cell;
+        String fictitiousDate;
+
+        final Sheet sheet = workbook.getSheetAt(0);
+        final int rowDim = sheet.getLastRowNum();
+        Row currRow = sheet.getRow(0);
+        final int colDim = currRow.getLastCellNum();
+
+        currRow.createCell(colDim, CellType.STRING).setCellValue("Date");
+
+        fictitiousDate = createRandomDate();
+        for (int i = 2; i < rowDim; i++) {
             currRow = sheet.getRow(i);
-            cell = currRow.createCell(currRow.getLastCellNum());
+            cell = currRow.createCell(colDim, CellType.STRING);
             cell.setCellValue(fictitiousDate);
         }
 
-        Sheet newSheet = workbook.createSheet("New Sheet");
-
-        dim = 0;
-        for(Row row : sheet){
-            newRow = newSheet.createRow(dim);
-
-            //Copia l'intera riga sulla nuova
-            for (Cell c : row) {
-                value = DATA_FORMATTER.formatCellValue(c);
-                newRow.createCell(i).setCellValue(value);
-            }
-
-            dim++;
-
-        }
-        return workbook;
+        workbook.setSheetName(0, fictitiousDate);
+        return fictitiousDate;
     }
 
-    private Date createRandomDate(){
+    private String createRandomDate(){
         // Get a new random instance, seeded from the clock
         Random rnd = new Random();
 
@@ -55,7 +44,7 @@ public class Multiplier {
         // -946684800000L = January 1, 2000
         // Add up to 18 years to it (using modulus on the next long)
         long ms = 946684800000L + (Math.abs(rnd.nextLong()) % (18L * 365 * 24 * 60 * 60 * 1000));
-
-        return new Date(ms);
+        //LocalDate date = Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()).toLocalDate();
+        return new SimpleDateFormat("MM-dd-yyyy").format(new Date(ms));
     }
 }
