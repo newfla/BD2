@@ -49,20 +49,28 @@ public final class Transformer {
             header=header.replace("Latitude_[N/S];","");
             header=header.replace("Latitude_[N/S];","");
             header=header.replace("Longitude_[W/E];","");
-            header=header.replace("absolute","StartDate");
+            header=header.replace("absolute","Time");
+            header=header.replace("Date","");
             size--;
 
             //Add header to final CSV
             builder=new StringBuilder();
+            builder.append("Date;");
             builder.append(header);
             builder.append('\n');
             List<CSVRecord>records= csvParser.getRecords();
             String time=cleanTime(records.get(0).get(0));
 
             for (CSVRecord record: records){
+                //setDateTest
+                builder.append(record.get(size-1));
+                builder.append(';');
+                //setTimeTest
                 builder.append(time);
                 builder.append(';');
-                for (int i = 1; i < size; i++) {
+
+                //set others
+                for (int i = 1; i < size-1; i++) {
 
                     //Remove latitude and longitude from every row
                     if (i==14 || i==15)
@@ -88,7 +96,7 @@ public final class Transformer {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return SIMPLE_DATE_FORMAT.format(date);
+        return SIMPLE_DATE_FORMAT.format(date)+":00";
     }
 
     public void setCsvFile(PrintWriter csvFile){

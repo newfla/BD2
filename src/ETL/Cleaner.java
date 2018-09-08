@@ -60,7 +60,7 @@ public final class Cleaner {
         StringBuilder builder=new StringBuilder();
         for (int i = 0; i < row1.getLastCellNum(); i++) {
             builder.append(DATA_FORMATTER.formatCellValue(row1.getCell(i)));
-            if (i!=0 && i!=6)
+            if (i!=0 && i!=6 && i!=row1.getLastCellNum()-1)
                 builder.append("_");
             if (i==23)
                 builder.append("[kW]");
