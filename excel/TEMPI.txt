@@ -1,0 +1,3 @@
+Duplicazione (x200) 531 secondi
+Clean (media su 200) 3.3 secondi
+Transformation (media su 200) 0.05 secondi

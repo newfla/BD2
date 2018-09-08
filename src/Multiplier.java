@@ -1,11 +1,13 @@
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-public class Multiplier {
+public final class Multiplier {
 
     private XSSFWorkbook workbook;
 
@@ -14,7 +16,7 @@ public class Multiplier {
     }
 
 
-    public String duplicate(){
+    public void duplicate(String path){
         Cell cell;
         String fictitiousDate;
 
@@ -33,7 +35,11 @@ public class Multiplier {
         }
 
         workbook.setSheetName(0, fictitiousDate);
-        return fictitiousDate;
+        try {
+            workbook.write(new FileOutputStream(path+"/"+fictitiousDate+".xlsx"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String createRandomDate(){
