@@ -18,7 +18,7 @@ public final class Main {
 
     private static final int NUM_TEST=200;
 
-    private static final boolean DUPLICATE=false, CLEAN=true, TRANSFORM=true;
+    private static final boolean DUPLICATE=true, CLEAN=true, TRANSFORM=true;
 
     public static void main(String[] args) {
 
@@ -36,7 +36,7 @@ public final class Main {
                 multiplier.setWorkbook(loadEXCEL());
                 multiplier.duplicate(PATH);
             }
-            System.out.println("Tempo impiegato per duplicare: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/NUM_TEST);
+            System.out.println("Tempo impiegato per duplicare: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/(double)NUM_TEST);
         }
 
         //Clean files
@@ -52,7 +52,7 @@ public final class Main {
                     cleaner.clean();
                 }
             }
-            System.out.println("Tempo impiegato per pulire: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/NUM_TEST);
+            System.out.println("Tempo impiegato per pulire: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/(double)NUM_TEST);
         }
 
 
@@ -68,7 +68,7 @@ public final class Main {
                     transformer.setCsvFile(createCSV(i));
                 }
             }
-            System.out.println("Tempo impiegato per trasformare: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/NUM_TEST);
+            System.out.println("Tempo impiegato per trasformare: "+ TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()-startTime)/(double)NUM_TEST);
         }
     }
 
