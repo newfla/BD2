@@ -125,8 +125,8 @@ public final class Cleaner {
             //CHECK NEGATIVE VALUE
             if  (i!=11 && i!=16  && !value.isEmpty() && value.toCharArray()[0]=='-')
                 return;
-            if (i!=15 && i!=16)
-                value=value.replace('.',',');
+          //  if (i!=15 && i!=16)
+                value=value.replace(',','.');
             builder.append(value);
             if (i< row.getLastCellNum()-1)
                 builder.append(';');

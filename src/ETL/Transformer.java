@@ -36,11 +36,12 @@ public final class Transformer {
             csvParser= new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withHeader().withIgnoreHeaderCase());
             Map<String,Integer> mapHeader=csvParser.getHeaderMap();
             int size =csvParser.getHeaderMap().keySet().size();
-            for (int i = 0; i < size-2; i++) {
+            for (int i = 0; i < size-1; i++) {
                 for (String headerString: mapHeader.keySet()) {
                     if (mapHeader.get(headerString)==i) {
                         builder.append(headerString);
-                        builder.append(';');
+                        if (i<size-2)
+                            builder.append(';');
                     }
                 }
             }
@@ -49,8 +50,6 @@ public final class Transformer {
             header=header.replace("latitude_n_s;","");
             header=header.replace("longitude_w_e;","");
             header=header.replace("absolute","time");
-            header=header.replace("date","");
-            size--;
 
             //Add header to final CSV
             builder=new StringBuilder();
@@ -59,7 +58,7 @@ public final class Transformer {
             builder.append('\n');
             List<CSVRecord>records= csvParser.getRecords();
             String time=cleanTime(records.get(0).get(0));
-
+            size--;
             for (CSVRecord record: records){
                 //setDateTest
                 builder.append(record.get(size));
@@ -69,14 +68,15 @@ public final class Transformer {
                 builder.append(';');
 
                 //set others
-                for (int i = 1; i < size-1; i++) {
+                for (int i = 1; i < size; i++) {
 
                     //Remove latitude and longitude from every row
                     if (i==14 || i==15)
                         continue;
 
                     builder.append(record.get(i));
-                    builder.append(';');
+                    if (i<size-1)
+                        builder.append(';');
                 }
                 builder.append('\n');
             }
@@ -99,7 +99,8 @@ public final class Transformer {
     }
 
     public void setCsvFile(PrintWriter csvFile){
-        csvFile.println(builder.toString());
+        String temp=builder.toString();
+        csvFile.print(temp.substring(0,temp.length()-1));
         csvFile.close();
     }
 }
