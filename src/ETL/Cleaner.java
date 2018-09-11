@@ -59,16 +59,18 @@ public final class Cleaner {
     private void metaDataOnCSV(Row row1, Row row2){
         StringBuilder builder=new StringBuilder();
         for (int i = 0; i < row1.getLastCellNum(); i++) {
-            builder.append(DATA_FORMATTER.formatCellValue(row1.getCell(i)));
+            String temp=DATA_FORMATTER.formatCellValue(row1.getCell(i)).toLowerCase();
+            temp=temp.replace(' ','_').replace('/','_').replace(".","").replace('(','_').replace(')','_');
+            builder.append(temp);
             if (i!=0 && i!=6 && i!=row1.getLastCellNum()-1)
                 builder.append("_");
             if (i==23)
-                builder.append("[kW]");
+                builder.append("kw");
             else
-                builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)));
+                builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)).toLowerCase().replace("[","").replace("]","").replace('/','_').replace("%","_perc").replace("rh","_rh"));
             builder.append(';');
         }
-        csvFile.println(builder.toString());
+        csvFile.println(builder.toString().replace("__","_"));
     }
 
     private void removeBadRows(){

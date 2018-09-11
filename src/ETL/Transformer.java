@@ -36,7 +36,7 @@ public final class Transformer {
             csvParser= new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';').withHeader().withIgnoreHeaderCase());
             Map<String,Integer> mapHeader=csvParser.getHeaderMap();
             int size =csvParser.getHeaderMap().keySet().size();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size-2; i++) {
                 for (String headerString: mapHeader.keySet()) {
                     if (mapHeader.get(headerString)==i) {
                         builder.append(headerString);
@@ -49,13 +49,13 @@ public final class Transformer {
             header=header.replace("Latitude_[N/S];","");
             header=header.replace("Latitude_[N/S];","");
             header=header.replace("Longitude_[W/E];","");
-            header=header.replace("absolute","Time");
-            header=header.replace("Date","");
+            header=header.replace("absolute","time");
+            header=header.replace("date","");
             size--;
 
             //Add header to final CSV
             builder=new StringBuilder();
-            builder.append("Date;");
+            builder.append("date;");
             builder.append(header);
             builder.append('\n');
             List<CSVRecord>records= csvParser.getRecords();

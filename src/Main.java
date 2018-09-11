@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 public final class Main {
@@ -18,7 +17,7 @@ public final class Main {
 
     private static final int NUM_TEST=200;
 
-    private static final boolean DUPLICATE=true, CLEAN=true, TRANSFORM=true;
+    private static final boolean DUPLICATE=false, CLEAN=true, TRANSFORM=true;
 
     public static void main(String[] args) {
 
