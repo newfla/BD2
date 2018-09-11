@@ -68,7 +68,8 @@ public final class Cleaner {
                 builder.append("kw");
             else
                 builder.append(DATA_FORMATTER.formatCellValue(row2.getCell(i)).toLowerCase().replace("[","").replace("]","").replace('/','_').replace("%","_perc").replace("rh","_rh"));
-            builder.append(';');
+            if (i< row1.getLastCellNum()-1)
+                builder.append(';');
         }
         csvFile.println(builder.toString().replace("__","_"));
     }
@@ -127,7 +128,8 @@ public final class Cleaner {
             if (i!=15 && i!=16)
                 value=value.replace('.',',');
             builder.append(value);
-            builder.append(';');
+            if (i< row.getLastCellNum()-1)
+                builder.append(';');
         }
         csvFile.println(builder.toString());
     }

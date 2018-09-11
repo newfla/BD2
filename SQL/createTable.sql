@@ -1,4 +1,4 @@
-create temp table tempTable(
+create temp table temp_table(
   date Date,
   time Time,
   relative_s int,

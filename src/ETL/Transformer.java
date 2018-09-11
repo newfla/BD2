@@ -46,9 +46,8 @@ public final class Transformer {
             }
             //Remove latitude and longitude from header
             String header=builder.toString();
-            header=header.replace("Latitude_[N/S];","");
-            header=header.replace("Latitude_[N/S];","");
-            header=header.replace("Longitude_[W/E];","");
+            header=header.replace("latitude_n_s;","");
+            header=header.replace("longitude_w_e;","");
             header=header.replace("absolute","time");
             header=header.replace("date","");
             size--;
@@ -63,7 +62,7 @@ public final class Transformer {
 
             for (CSVRecord record: records){
                 //setDateTest
-                builder.append(record.get(size-1));
+                builder.append(record.get(size));
                 builder.append(';');
                 //setTimeTest
                 builder.append(time);
