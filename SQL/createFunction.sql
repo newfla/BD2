@@ -67,7 +67,9 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
   PERFORM set_index(false);
 
   --populate Fact Table--
-  /*INSERT INTO acquisition_fact ( date_key,
+  /*INSERT INTO acquisition_fact (
+                                 test_id,
+                                 date_key,
                                  step_key,
                                  km_key,
                                  co_concentration_vol_per  ,
@@ -111,7 +113,8 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
                                  engine_fuel_rate_by_ecu_L_h  ,
                                  actual_engine_by_ecu_perc  ,
                                  engine_reference_torque_by_ecu_Nm  )
-    SELECT     T.date,
+    SELECT     T.test_id
+               T.date,
                T.relative_s,
                (T.distance_m::int/1000),
                T.co_concentration_vol_per  ,
@@ -158,10 +161,10 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
     FROM temp_table as T;*/
 
   --populate Distance Hierarchy--
-    INSERT INTO distance_hierarchy
-    SELECT  T.distance_m::int /1000 , T.distance_m::int/5000, T.distance_m::int/250000., T.distance_m::int/500000
+   INSERT INTO distance_hierarchy
+    SELECT  floor(T.distance_m/1000.) , floor(T.distance_m/5000.), floor(T.distance_m/250000.), floor(T.distance_m/500000.)
     FROM temp_table T
-    WHERE T.distance_m::int /1000 NOT IN (SELECT U.km_key FROM distance_hierarchy U);
+    WHERE floor(T.distance_m/1000.) NOT IN (SELECT floor(U.km_key) FROM distance_hierarchy U);
 
   --populate Date Hierarchy--
     INSERT INTO date_hierarchy
@@ -170,9 +173,9 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
     WHERE T.date NOT IN (SELECT U.date_key FROM date_hierarchy U);
 
     --populate Time Hierarchy--
-    INSERT INTO time_hierarchy
+  /*  INSERT INTO time_hierarchy
     SELECT EXTRAT(hour FROM T.time
-    FROM temp_table T;
+    FROM temp_table T;*/
 
   TRUNCATE TABLE temp_table;
   --PERFORM set_index(true);--

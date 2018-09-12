@@ -63,7 +63,7 @@ public final class Main {
                 BufferedReader reader = loadCSV(i);
                 if (reader != null) {
                     transformer.setReader(reader);
-                    transformer.transform();
+                    transformer.transform(i+1);
                     transformer.setCsvFile(createCSV(i));
                 }
             }

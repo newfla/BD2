@@ -29,7 +29,7 @@ public final class Transformer {
         this.reader = reader;
     }
 
-    public void transform(){
+    public void transform(int j){
         builder=new StringBuilder();
 
         try {
@@ -53,6 +53,7 @@ public final class Transformer {
 
             //Add header to final CSV
             builder=new StringBuilder();
+            builder.append("test_id;");
             builder.append("date;");
             builder.append(header);
             builder.append('\n');
@@ -60,6 +61,9 @@ public final class Transformer {
             String time=cleanTime(records.get(0).get(0));
             size--;
             for (CSVRecord record: records){
+                //setTestID
+                builder.append(j);
+                builder.append(';');
                 //setDateTest
                 builder.append(record.get(size));
                 builder.append(';');

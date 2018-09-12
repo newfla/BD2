@@ -1,6 +1,7 @@
 
 --Temporary table to store csv records--
 CREATE TABLE if not exists temp_table(
+  test_id int,
   date Date,
   time Time,
   relative_s int,
@@ -122,9 +123,6 @@ CREATE TABLE if not exists acquisition_fact(
   actual_engine_by_ecu_perc double precision,
   engine_reference_torque_by_ecu_Nm double precision
 );
-
---Sequence for acquisition_fact Table--
-CREATE SEQUENCE IF NOT EXISTS test_id_seq MINVALUE 1 start 1;
 
 --Index for fact table--
 CREATE INDEX if not exists acquisition_fact_date_index on acquisition_fact using hash(date_key);
