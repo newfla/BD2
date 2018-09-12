@@ -63,13 +63,13 @@ CREATE TABLE if not exists date_hierarchy(
 --Time Hierarchy Table--
 CREATE TABLE if not exists time_hierarchy(
   step_key int,
-  minuteS smallint,
-  hourS smallint
+  minute smallint,
+  hour smallint
 );
 
 --Distance Hierarchy Table--
 CREATE TABLE  if not exists distance_hierarchy(
-  km_key int UNIQUE ,
+  km_key int UNIQUE,
   km_5 int,
   km_25 int,
   km_50 int
@@ -129,5 +129,5 @@ CREATE INDEX if not exists acquisition_fact_date_index on acquisition_fact using
 
 CREATE INDEX if not exists acquisition_fact_step_index on acquisition_fact using hash(step_key);
 
-CREATE INDEX if not exists acquisition_fact_km_index on acquisition_fact using hash(km_key);
+--CREATE INDEX if not exists acquisition_fact_km_index on acquisition_fact using hash(km_key);--
 
