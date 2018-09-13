@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
   PERFORM set_index(false);
 
   --populate Fact Table--
-  /*INSERT INTO acquisition_fact (
+  INSERT INTO acquisition_fact (
                                  test_id,
                                  date_key,
                                  step_key,
@@ -113,7 +113,7 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
                                  engine_fuel_rate_by_ecu_L_h  ,
                                  actual_engine_by_ecu_perc  ,
                                  engine_reference_torque_by_ecu_Nm  )
-    SELECT     T.test_id
+    SELECT     T.test_id,
                T.date,
                T.relative_s,
                (T.distance_m::int/1000),
@@ -158,11 +158,11 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
                T.engine_fuel_rate_by_ecu_L_h  ,
                T.actual_engine_by_ecu_perc  ,
                T.engine_reference_torque_by_ecu_Nm
-    FROM temp_table as T;*/
+    FROM temp_table as T;
 
   --populate Distance Hierarchy--
     INSERT INTO distance_hierarchy
-    SELECT T.distance_m::int /1000 , T.distance_m::int/5000, T.distance_m::int/250000, T.distance_m::int/500000
+    SELECT distinct T.distance_m::int /1000 , T.distance_m::int/5000, T.distance_m::int/250000, T.distance_m::int/500000
     FROM temp_table T
     WHERE T.distance_m::int /1000 NOT IN (SELECT U.km_key FROM distance_hierarchy U);
 
@@ -173,9 +173,9 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
     WHERE T.date NOT IN (SELECT U.date_key FROM date_hierarchy U);
 
     --populate Time Hierarchy--
-  /*  INSERT INTO time_hierarchy
-    SELECT EXTRACT(hour FROM T.time
-    FROM temp_table T;*/
+    INSERT INTO time_hierarchy
+    SELECT distinct T.relative_s, T.relative_s/60, T.relative_s/3600
+    FROM temp_table T;
 
   TRUNCATE TABLE temp_table;
   PERFORM set_index(true);
