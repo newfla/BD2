@@ -1,0 +1,164 @@
+\documentclass[a4paper,12pt]{book}
+
+%Template per documenti e tesi
+
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+\usepackage{graphicx}
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{shapepar}
+\usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{fonttable}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{enumerate}
+%\usepackage{enumitem}
+
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Java,
+	%aboveskip=3mm,
+	%belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle=\small\ttfamily,
+	numbers=none,
+	numberstyle=\scriptsize,
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\lstdefinelanguage{json}{
+	basicstyle=\small\ttfamily,
+	numbers=left,
+	numberstyle=\scriptsize,
+	stepnumber=1,
+	numbersep=8pt,
+	showstringspaces=false,
+	breaklines=true,
+	frame=lines,
+	backgroundcolor=\color{background},
+}
+
+\hypersetup{
+	colorlinks=false,
+	linktoc=all, %both sections and subsections linked
+}
+
+\usepackage[hyperref,backend=bibtex,backref,backrefstyle=none,sorting=none]{biblatex}
+\addbibresource{references.bib}
+\usepackage{fancyhdr}
+
+\newcommand{\makelogo}{%
+	\centering
+	\textsc{Università degli Studi di Napoli Federico II}
+	\\[.4cm]
+	\textsc{Dipartimento di Ingegneria Elettrica e Tecnologie dell'Informazione}
+	\\[1.1cm]
+	\includegraphics[width=0.7\textwidth]{./figures/logo_blu.png}\\[1.1cm]
+	\textsc{Corso di Laurea Magistrale in Informatica\\A.A. 2017-18}
+	\\[2.5cm]
+	\textbf{Progetto Basi di Dati II Modulo B}
+	\vfill
+	%\end{par}
+	\centering
+	\begin{par}
+		\begin{tabular}{lllll}
+			& \textbf{Autori} &                        &  &  \\
+			\textbf{Bizzarri Flavio} & \textbf{}       & \textbf{Cuomo Daniele} &  &  \\
+			\textbf{N97000281}       & \textbf{}       & \textbf{N97000270}     &  &  \\
+			&                 &                        &  & 
+		\end{tabular}
+	
+	\end{par}
+	%\par
+}
+
+\fancyhead{}
+\fancyhead[LO,LE]{\slshape\nouppercase\leftmark}
+\cfoot{\thepage}
+
+\pagestyle{fancy}
+
+\DefineBibliographyStrings{italian}{%
+	bibliography = {Riferimenti},
+}
+
+\begin{document}
+	
+	
+	\lstset{language=Matlab,%
+		%basicstyle=\color{red},
+		breaklines=true,%
+		morekeywords={matlab2tikz},
+		keywordstyle=\color{blue},%
+		morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+		identifierstyle=\color{black},%
+		stringstyle=\color{mylilas},
+		commentstyle=\color{mygreen},%
+		showstringspaces=false,%without this there will be a symbol in the places where there is a space
+		numbers=left,%
+		numberstyle={\tiny \color{black}},% size of the numbers
+		numbersep=9pt, % this defines how far the numbers are from the text
+		emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+		%emph=[2]{word1,word2}, emphstyle=[2]{style},    
+	}
+
+	
+	\onehalfspacing
+	%\doublespacing use in case of emergency
+	\author{F. Bizzarri, D. Cuomo}
+	\title{Progetto Finale Basi di Dati II}
+	
+	{\frontmatter
+		\let\cleardoublepage\clearpage{\makelogo}
+		\thispagestyle{empty}
+		
+		\include{./chapters/sommario}
+		
+		\tableofcontents
+		
+		\thispagestyle{empty}
+		\mainmatter
+	}
+	
+	
+	\let\cleardoublepage\clearpage{		
+		%\include{./chapters/intro}
+		\include{./chapters/architettura}
+		%\include{./chapters/analisi}
+		%\appendix
+		%\include{./appendix/sorgenti}
+	}
+		
+	\backmatter
+	%\printbibliography[title=Riferimenti,heading=bibintoc]
+	
+	%\printglossaries
+	%\listoffigures
+	%\listoftables
+	
+	%\let\cleardoublepage\clearpage{
+	%	\include{./ringraziamenti/thanks}
+	%	\thispagestyle{empty}
+	%}
+\end{document}
