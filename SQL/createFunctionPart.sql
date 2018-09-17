@@ -3,13 +3,38 @@ CREATE OR REPLACE FUNCTION set_index (enable boolean) RETURNS VOID AS
   $$
   BEGIN
     IF(enable= true) THEN
-      CREATE INDEX if not exists acquisition_fact_date_index on acquisition_fact using hash(date_key);
-      CREATE INDEX if not exists acquisition_fact_step_index on acquisition_fact using hash(step_key);
-      CREATE INDEX if not exists acquisition_fact_km_index on acquisition_fact using hash(km_key);
+      CREATE INDEX if not exists acquisition_fact_general_date_index on acquisition_fact_general using hash(date_key);
+      CREATE INDEX if not exists acquisition_fact_general_step_index on acquisition_fact_general using hash(step_key);
+      CREATE INDEX if not exists acquisition_fact_general_km_index on acquisition_fact_general using hash(km_key);
+
+      CREATE INDEX if not exists acquisition_fact_flow_date_index on acquisition_fact_flow using hash(date_key);
+      CREATE INDEX if not exists acquisition_fact_flow_step_index on acquisition_fact_flow using hash(step_key);
+      CREATE INDEX if not exists acquisition_fact_flow_km_index on acquisition_fact_flow using hash(km_key);
+
+      CREATE INDEX if not exists acquisition_fact_particles_date_index on acquisition_fact_particles using hash(date_key);
+      CREATE INDEX if not exists acquisition_fact_particles_step_index on acquisition_fact_particles using hash(step_key);
+      CREATE INDEX if not exists acquisition_fact_particles_km_index on acquisition_fact_particles using hash(km_key);
+
+      CREATE INDEX if not exists acquisition_fact_ecu_date_index on acquisition_fact_ecu using hash(date_key);
+      CREATE INDEX if not exists acquisition_fact_ecu_step_index on acquisition_fact_ecu using hash(step_key);
+      CREATE INDEX if not exists acquisition_fact_ecu_km_index on acquisition_fact_ecu using hash(km_key);
+
     ELSE
-      DROP INDEX IF EXISTS acquisition_fact_date_index;
-      DROP INDEX IF EXISTS acquisition_fact_step_index;
-      DROP INDEX IF EXISTS acquisition_fact_km_index;
+      DROP INDEX IF EXISTS acquisition_fact_general_date_index;
+      DROP INDEX IF EXISTS acquisition_fact_general_step_index;
+      DROP INDEX IF EXISTS acquisition_fact_general_km_index;
+
+      DROP INDEX IF EXISTS acquisition_fact_flow_date_index;
+      DROP INDEX IF EXISTS acquisition_fact_flow_step_index;
+      DROP INDEX IF EXISTS acquisition_fact_flow_km_index;
+
+      DROP INDEX IF EXISTS acquisition_fact_particles_date_index;
+      DROP INDEX IF EXISTS acquisition_fact_particles_step_index;
+      DROP INDEX IF EXISTS acquisition_fact_particles_km_index;
+
+      DROP INDEX IF EXISTS acquisition_fact_ecu_date_index;
+      DROP INDEX IF EXISTS acquisition_fact_ecu_step_index;
+      DROP INDEX IF EXISTS acquisition_fact_ecu_km_index;
     END IF;
   END;
   $$
@@ -66,8 +91,65 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
   --PERFORM import_records_temp_table(file_path);--
   PERFORM set_index(false);
 
-  --populate Fact Table--
-  INSERT INTO acquisition_fact (
+  --populate Fact General Table--
+  INSERT INTO acquisition_fact_general (
+                                 test_id,
+                                 date_key,
+                                 step_key,
+                                 km_key,
+                                 amb_temp_degC  ,
+                                 amb_press_kPa  ,
+                                 amb_humid_RH  ,
+                                 altitude_m  ,
+                                 velocity_km_h  ,
+                                 battery_V  ,
+                                 fuel_g_s  ,
+                                 power_kW  ,
+                                 speed_km_h  ,
+                                 voltage_V  ,
+                                 distance_m )
+    SELECT     T.test_id,
+               T.date,
+               T.relative_s,
+               (T.distance_m::int/1000),
+               T.amb_temp_degC  ,
+               T.amb_press_kPa  ,
+               T.amb_humid_RH  ,
+               T.altitude_m  ,
+               T.velocity_km_h  ,
+               T.battery_V  ,
+               T.fuel_g_s  ,
+               T.power_kW  ,
+               T.speed_km_h  ,
+               T.voltage_V  ,
+               T.distance_m
+    FROM temp_table as T;
+
+ --populate Fact Flow Table--
+  INSERT INTO acquisition_fact_flow (
+                                 test_id,
+                                 date_key,
+                                 step_key,
+                                 km_key,
+                                 a_f  ,
+                                 exh_flow_corr_m3_min  ,
+                                 exh_flow_corr_m3_s  ,
+                                 exh_Temp_degC  ,
+                                 exh_press_kPa   )
+    SELECT     T.test_id,
+               T.date,
+               T.relative_s,
+               (T.distance_m::int/1000),
+
+               T.a_f  ,
+               T.exh_flow_corr_m3_min  ,
+               T.exh_flow_corr_m3_s  ,
+               T.exh_Temp_degC  ,
+               T.exh_press_kPa
+    FROM temp_table as T;
+
+ --populate Fact Particles Table--
+  INSERT INTO acquisition_fact_particles (
                                  test_id,
                                  date_key,
                                  step_key,
@@ -76,30 +158,34 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
                                  co2_concentration_vol_perc  ,
                                  nox_concentration_ppm  ,
                                  h2O_conc_vol_perc  ,
-                                 a_f  ,
-                                 exh_flow_corr_m3_min  ,
-                                 exh_flow_corr_m3_s  ,
-                                 exh_Temp_degC  ,
-                                 exh_press_kPa  ,
-                                 amb_temp_degC  ,
-                                 amb_press_kPa  ,
-                                 amb_humid_RH  ,
-                                 altitude_m  ,
-                                 velocity_km_h  ,
-                                 battery_V  ,
+
                                  co_mass_g_s  ,
                                  co2_mass_g_s  ,
-                                 nox_mass_g_s  ,
-                                 fuel_g_s  ,
-                                 power_kW  ,
-                                 speed_km_h  ,
-                                 voltage_V  ,
+                                 nox_mass_g_s   )
+    SELECT     T.test_id,
+               T.date,
+               T.relative_s,
+               (T.distance_m::int/1000),
+               T.co_concentration_vol_per  ,
+               T.co2_concentration_vol_perc  ,
+               T.nox_concentration_ppm  ,
+               T.h2O_conc_vol_perc  ,
+               T.co_mass_g_s  ,
+               T.co2_mass_g_s  ,
+               T.nox_mass_g_s
+    FROM temp_table as T;
+
+     --populate Fact ECU Table--
+  INSERT INTO acquisition_fact_ecu (
+                                 test_id,
+                                 date_key,
+                                 step_key,
+                                 km_key,
                                  engine_coolant_temperature_by_ecu_degC  ,
                                  fuel_pressure_by_ecu_kPa  ,
                                  engine_RPM_by_ecu_rpm  ,
                                  vehicle_speed_by_ecu_km_h  ,
                                  vehicle_speed_by_ecu_m_s  ,
-                                 distance_m  ,
                                  intake_air_temperature_by_ecu_degC  ,
                                  maf_air_flow_rate_by_ecu_grams_sec  ,
                                  maf_air_flow_rate_by_ecu_m3_s  ,
@@ -117,34 +203,11 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
                T.date,
                T.relative_s,
                (T.distance_m::int/1000),
-               T.co_concentration_vol_per  ,
-               T.co2_concentration_vol_perc  ,
-               T.nox_concentration_ppm  ,
-               T.h2O_conc_vol_perc  ,
-               T.a_f  ,
-               T.exh_flow_corr_m3_min  ,
-               T.exh_flow_corr_m3_s  ,
-               T.exh_Temp_degC  ,
-               T.exh_press_kPa  ,
-               T.amb_temp_degC  ,
-               T.amb_press_kPa  ,
-               T.amb_humid_RH  ,
-               T.altitude_m  ,
-               T.velocity_km_h  ,
-               T.battery_V  ,
-               T.co_mass_g_s  ,
-               T.co2_mass_g_s  ,
-               T.nox_mass_g_s  ,
-               T.fuel_g_s  ,
-               T.power_kW  ,
-               T.speed_km_h  ,
-               T.voltage_V  ,
                T.engine_coolant_temperature_by_ecu_degC  ,
                T.fuel_pressure_by_ecu_kPa  ,
                T.engine_RPM_by_ecu_rpm  ,
                T.vehicle_speed_by_ecu_km_h  ,
                T.vehicle_speed_by_ecu_m_s  ,
-               T.distance_m  ,
                T.intake_air_temperature_by_ecu_degC  ,
                T.maf_air_flow_rate_by_ecu_grams_sec  ,
                T.maf_air_flow_rate_by_ecu_m3_s  ,

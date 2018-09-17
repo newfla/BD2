@@ -1,0 +1,185 @@
+\chapter{Analisi}
+In questo capitolo sono riportati i risultati e i tempi ottenuti per ogni fase: dalle procedure ETL all'esecuzione delle query.
+
+\section{ETL}
+\subsection{Trasformazione in CSV}
+In questa sezione copriremo un'analisi dei tempi ottenuti nella fase che permette, a partire dai dati originali, di ottenere un file in formato CSV contenente i dati ripuliti da inconsistenze e in un formato adatto ad essere importato nel Datawarehouse.
+In particolare nella fase di puliza, a partire dal file XSLX, si estraggono unicamente i record dove non appaiono valori negativi per quantità intrinsecamente positive (concentrazione, volume, ecc.); per i record ove manca il valore "relative" e/o la distanza percorsa si procede ad un calcolo a partire dall'ultima rilevazione valida estratta. Inoltre tutte le righe che presentano una chiara assenza di dati (70\% delle colonne) vengono scartate. Infine, durante la fase di trasformazione, per ogni file viene generata una data e un test\_id e per separare la parte intera da quella decimale si sostituisce la virgola con il punto.\\
+I dati ottenuti si riferiscono ad una media aritmetica ottenuta testando 200 file ($\sim$1 milione di righe) generati a partire dal file originario fornito dall'Istituto Motori di Napoli.
+
+\begin{table}[H]
+	\centering
+\begin{tabular}{ccccc}
+	\rowcolor[HTML]{333333} 
+	{\color[HTML]{FFFFFF}Righe XSLX}  
+	& 
+	{\color[HTML]{FFFFFF}Righe CSV}
+	&
+	{\color[HTML]{FFFFFF}Righe perse}
+	&
+	{\color[HTML]{FFFFFF}Peso file XSLX}
+	&                                 
+	{\color[HTML]{FFFFFF}Peso file CSV}\\
+	\begin{tabular}[c]{@{}l@{}}5764\end{tabular}             
+	& \begin{tabular}[c]{@{}l@{}}5706\end{tabular} 
+	& \begin{tabular}[c]{@{}l@{}}1\%\end{tabular}  
+	& \begin{tabular}[c]{@{}l@{}}2.138KB\end{tabular}  
+	& \begin{tabular}[c]{@{}l@{}}2.283KB\end{tabular}   
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+	{\color[HTML]{FFFFFF}Fase di pulizia}
+	&
+	{\color[HTML]{FFFFFF}Fase di trasformazione}
+	&
+	{\color[HTML]{FFFFFF}Tempo totale}\\
+	\begin{tabular}[c]{@{}l@{}}3.04s\end{tabular}             
+	& \begin{tabular}[c]{@{}l@{}}0,05s\end{tabular} 
+	& \begin{tabular}[c]{@{}l@{}}3,05s\end{tabular}
+\end{tabular}
+\end{table}
+
+Questa fase mette in luce la buona qualità dei dati forniti dall'istituto: ci si aspetta in media di perdere pochissimi dati a causa di inconsistenze. Per quanto riguarda invece le dimensioni si nota come il formato Comma-separated values sia leggermente meno efficiente nella compressione rispetto al formato proprietario di Microsoft$^{\tiny{\textregistered}}$ ma al tempo stesso permetta una più veloce elaborazione.
+
+\subsection{Import in tabella temporanea}
+Al fine di importare i file CSV nella tabella dei fatti ci si appoggia ad una tabella temporanea al fine di agevolare le operazioni successive. Questa tabella viene troncata alla fine della procedura. L'import sfrutta la funzione \textit{COPY} messa a disposizione dal DBMS PostgreSQL.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Numero file}
+		&
+		{\color[HTML]{FFFFFF}Numero righe}
+		&
+		{\color[HTML]{FFFFFF}Tempo}\\
+		\begin{tabular}[c]{@{}l@{}}1\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}5706\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}214ms\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}50\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}8,428s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}100\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}570.600\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}16.522s\end{tabular}
+	\end{tabular}
+\caption{I dati si riferiscono ad una media di 5 esecuzioni}
+\end{table}	
+I risultati mostrano la bontà della funzione \textit{COPY} che sfruttando un inserimento batch di 1000 righe per volta riesce ad abbattere in modo consistente i tempi.
+
+\subsection{Import nello schema}
+In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengono travasati nello schema proposto dopo aver disabilitato tutti gli indici. Le prove effettuate prendono in considerazione diverse dimensioni della tabella dei fatti oltre al caso in cui lo schema risulti partizionato.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Numero righe importate}
+		&
+		{\color[HTML]{FFFFFF}Partizionamento}
+		&
+		{\color[HTML]{FFFFFF}Tempo}\\
+		\begin{tabular}[c]{@{}l@{}}0\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}3,925s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}0\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}7,753s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}3,730s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}7,404s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}4,535s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}             
+		& \begin{tabular}[c]{@{}l@{}}285.300\end{tabular} 
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}8,572s\end{tabular}
+		
+	\end{tabular}
+	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
+\end{table}	
+Dalla tabella emerge come il partizionamento comporti quasi un raddoppio del tempo necessario all'inserimento: ciò è dovuto al dover spalmare un singolo record della tabella temporanea su 4 differenti tabelle. Questo slow-down è risolvibile pensando a 4 inserimenti in parallelo: infatti le 4 tabelle, anche se logicamente collegate, durante l'inserimento non necessitano di condividere alcuna informazione.
+\subsection{Aggiornamento degli indici}
+In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti e dimensioni. Questi indici sono assolutamente necessari per velocizzare le query ma possono essere disabilitati durante la fase di update dello schema.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Partizionamento}
+		&
+		{\color[HTML]{FFFFFF}Tempo}\\
+		\begin{tabular}[c]{@{}l@{}}285.300\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}2,530s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}285.300\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}11,534s\end{tabular}\\	\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}6,194s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,715s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}16,903s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}67,469s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,141s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
+		
+	\end{tabular}
+	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
+\end{table}	
+Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
+\subsection{Aggiornamento delle viste materializzate}
+TODO.
+
+\section{Analisi performance query}
+In questa sezione verranno analizzate le query implementate nelle differenti implementazioni.
+
+\subsection{Query 1}
+TODO.
+
+\subsection{Query 2}
+TODO.
+
+\subsection{Query 3}
+TODO.
+
+\subsection{Query 4}
+TODO.
+
+\subsection{Query 5}
+TODO.
+
+\subsection{Query 6}
+TODO.

@@ -1,7 +1,8 @@
 \chapter{Progettazione}
 
 \section{Interrogazioni}
-\begin{table}[h]
+\begin{table}[H]
+	\centering
 \begin{tabular}{cll}
 	\rowcolor[HTML]{333333} 
 	{\color[HTML]{FFFFFF} \#} & {\color[HTML]{FFFFFF} Query}                                                                                       & {\color[HTML]{FFFFFF} Obiettivo}                                                                                                                                                                                                                   \\
@@ -14,11 +15,65 @@
 	5                         & \begin{tabular}[c]{@{}l@{}}Media e deviazione standard\\ delle temperature\end{tabular}                            & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a \\ valutare le prestazioni ottenute\\ dall'esecuzione con le colonne \\ concentrate su di un unica\\ tabella restituita da un\\ partizionamento verticale\end{tabular}                    
 \end{tabular}
 \end{table}
+Le query sopra riportate hanno guidato lo sviluppo del sistema in ogni sua fase e hanno permesso di sperimentare differenti tecniche di implementazione di un sistema ROLAP.
+Una definizione formale delle stesse in linguaggio SQL sarà presentata più avanti nel corso di questo documento.
 
 \section{Diagrammi}
-\begin{figure}
+Di seguito è riportato il diagramma UML che rappresenta lo schema dei fatti implementato secondo il modello relazionale ROLAP.
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=1.\linewidth]{figures/class_fact_scheme}
-	\caption{}
+	\caption{Diagaramma UML schema dei fatti}
 	\label{fig:ofm}
 \end{figure}
+È stata inoltre progettata e implementata una variante dello schema proposto che sfrutta la tecnica del partizionamento verticale ovvero la possibilità di dividere la tabella dei fatti in più tabelle, ognuna delle quali rappresenta una particolare sfaccettatura del \textit{fatto}. Il partizionamento viene solitamente adoperato per agevolare quelle interrogazioni che riguardano solo una particolare area di interesse. Questa tecnica presenta però l'inconveniente di dover aggiungere una chiave tra le tabelle al fine di poterle ricongiungere per analizzare il dato nella sua completezza e la duplicazione delle chiave surrogate associate alle dimensioni di analisi.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.\linewidth]{figures/class_fact_scheme} %TODO cambiare diagaramma
+	\caption{Diagramma UML schema dei fatti partizionato verticalmente}
+	\label{fig:ofm}
+\end{figure}
+
+\section{ETL}
+Al fine di avere un numero rilevante di dati per l'analisi dei tempi è stato implementato un meccanismo di duplicazione dei file.
+La procedura ETL sviluppata si compone di differenti passaggi descritti nella seguente tabella.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{clll}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF} \#}	& {\color[HTML]{FFFFFF} Passaggio}	& {\color[HTML]{FFFFFF} Descrizione}	& {\color[HTML]{FFFFFF} Implementazione}
+		\\
+		1							& \begin{tabular}[c]{@{}l@{}}Trasformazione dei file\\ XLSX in formato CSV\end{tabular}
+																		& \begin{tabular}[c]{@{}l@{}}Eliminazione delle righe contenenti \\dati inconsistenti\\Calcolo dei campi formula\\Creazione di una data fittizia \\Creazione di un test\_id\\Salvataggio in formato CSV\end{tabular}
+																									            & \begin{tabular}[c]{@{}l@{}}Java\end{tabular}
+		\\
+		\rowcolor[HTML]{C0C0C0} 
+		2                         & \begin{tabular}[c]{@{}l@{}}Importazione dei dati in\\ tabella provvisoria\end{tabular} 
+																		& \begin{tabular}[c]{@{}l@{}}Viene sfruttata il comando copy\\ del DBMS per importare i dati\\ in maniera efficiente\end{tabular}
+																												 & \begin{tabular}[c]{@{}l@{}}PostgreSQL\end{tabular} 
+		\\
+		3                         & \begin{tabular}[c]{@{}l@{}}Shutdown degli indici\end{tabular}        
+																		& \begin{tabular}[c]{@{}l@{}}\end{tabular}
+																												 & \begin{tabular}[c]{@{}l@{}}PostgreSQL\end{tabular}
+		\\
+		\rowcolor[HTML]{C0C0C0} 
+		4                         & \begin{tabular}[c]{@{}l@{}}Aggiornamento dello schema\end{tabular}                     
+																		& \begin{tabular}[c]{@{}l@{}}Aggiornamento delle dimensioni\\Aggiornamento tabella dei fatti\end{tabular}            
+																												 & \begin{tabular}[c]{@{}l@{}}PostgreSQL\end{tabular}	                      
+		\\	
+		5                         & \begin{tabular}[c]{@{}l@{}}Riattivazione degli indici\end{tabular}             
+																		& \begin{tabular}[c]{@{}l@{}}\end{tabular}  
+																												 & \begin{tabular}[c]{@{}l@{}}PostgreSQL\end{tabular}    
+		\\
+		\rowcolor[HTML]{C0C0C0} 
+		6                         & \begin{tabular}[c]{@{}l@{}}Aggiornamento viste\end{tabular}                     
+																		& \begin{tabular}[c]{@{}l@{}}\end{tabular}            
+																												 & \begin{tabular}[c]{@{}l@{}}PostgreSQL\end{tabular}	
+	\end{tabular}
+\end{table}
+Per righe inconsistenti si intendono tutte quelle righe ove per valori indicanti volumi e/o concentrazioni vi sono valori negativi; inoltre viene dedotta la distanza percorsa ove mancante sfruttando la distanza percorsa e le velocità istantanee rilevate negli istanti precedenti.
+
+
+\section{Viste Materializzate}
+Sono state create le seguenti viste materializzate al fine di implementare efficacemente le query 3 e 4.
+TODO codice viste qui

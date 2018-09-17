@@ -1,5 +1,9 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
 The style file: biblatex.bst
+A level-1 auxiliary file: ./chapters/sommario.aux
+A level-1 auxiliary file: ./chapters/architettura.aux
+A level-1 auxiliary file: ./chapters/analisi.aux
+A level-1 auxiliary file: ./chapters/conclusioni.aux
 Database file #1: main-blx.bib
 Database file #2: references.bib
-Biblatex version: 3.3
+Biblatex version: 3.8

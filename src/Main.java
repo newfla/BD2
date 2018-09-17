@@ -15,9 +15,9 @@ public final class Main {
 
     private static final String PATH="./excel/duplicates";
 
-    private static final int NUM_TEST=1;
+    private static final int NUM_TEST=15;
 
-    private static final boolean DUPLICATE=false, CLEAN=true, TRANSFORM=true;
+    private static final boolean DUPLICATE=true, CLEAN=true, TRANSFORM=true;
 
     public static void main(String[] args) {
 
