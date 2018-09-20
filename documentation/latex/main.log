@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.15)  17 SEP 2018 18:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.15)  20 SEP 2018 10:49
 entering extended mode
 **./main.tex
 (main.tex
@@ -866,14 +866,21 @@ Underfull \vbox (badness 4608) has occurred while \output is active []
 
 
 ]
-<figures/class_fact_scheme.pdf, id=148, 383.18156pt x 545.78906pt>
+<figures/class_fact_scheme.pdf, id=148, 597.51233pt x 845.0471pt>
 File: figures/class_fact_scheme.pdf Graphic file (type pdf)
 <use figures/class_fact_scheme.pdf>
-Package pdftex.def Info: figures/class_fact_scheme.pdf  used on input line 25.
-(pdftex.def)             Requested size: 455.24411pt x 648.47269pt.
+Package pdftex.def Info: figures/class_fact_scheme.pdf  used on input line 24.
+(pdftex.def)             Requested size: 334.60461pt x 473.22316pt.
+<figures/class_fact_scheme_part.pdf, id=149, 845.0471pt x 597.51233pt>
+File: figures/class_fact_scheme_part.pdf Graphic file (type pdf)
+<use figures/class_fact_scheme_part.pdf>
+Package pdftex.def Info: figures/class_fact_scheme_part.pdf  used on input line
+ 31.
+(pdftex.def)             Requested size: 507.03218pt x 358.51016pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
+Overfull \hbox (51.78807pt too wide) in paragraph at lines 31--32
+ [][] 
+ []
 
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -881,28 +888,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2]
-Overfull \vbox (0.97568pt too high) has occurred while \output is active []
-
-
-[3 <./figures/class_fact_scheme.pdf>]
-File: figures/class_fact_scheme.pdf Graphic file (type pdf)
-<use figures/class_fact_scheme.pdf>
-Package pdftex.def Info: figures/class_fact_scheme.pdf  used on input line 32.
-(pdftex.def)             Requested size: 455.24411pt x 648.47269pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [4]
-Overfull \vbox (0.97568pt too high) has occurred while \output is active []
-
-
-[5]
-Overfull \hbox (16.29594pt too wide) in paragraph at lines 42--73
+[2 <./figures/class_fact_scheme.pdf>] [3 <./figures/class_fact_scheme_part.pdf>
+]
+Overfull \hbox (16.29594pt too wide) in paragraph at lines 41--72
  [][] 
  []
 
-) [6]
+) [4]
 \openout2 = `./chapters/analisi.aux'.
 
  (chapters/analisi.tex
@@ -926,16 +918,16 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
 
 LaTeX Warning: Command \textcircled invalid in math mode on input line 46.
 
-[7
+[5
 
 
 
-] [8] [9]) [10]
+] [6] [7]) [8]
 \openout2 = `./chapters/conclusioni.aux'.
 
  (chapters/conclusioni.tex
 Capitolo 3.
-) [11
+) [9
 
 
 
@@ -957,13 +949,13 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15950 strings out of 492972
- 257287 string characters out of 3126622
- 729914 words of memory out of 3000000
- 19545 multiletter control sequences out of 15000+200000
+ 15953 strings out of 492972
+ 257478 string characters out of 3126622
+ 728913 words of memory out of 3000000
+ 19549 multiletter control sequences out of 15000+200000
  12054 words of font info for 45 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,18n,43p,789b,1387s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,18n,43p,789b,1385s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmcsc10.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/
@@ -974,9 +966,9 @@ l/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
 C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
 /cmsy6.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
 /amsfonts/cm/cmti12.pfb>
-Output written on main.pdf (14 pages, 623527 bytes).
+Output written on main.pdf (12 pages, 612043 bytes).
 PDF statistics:
- 265 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
- 171 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 40 named destinations out of 1000 (max. 500000)
+ 176 words of extra memory for PDF output out of 10000 (max. 10000000)
 
