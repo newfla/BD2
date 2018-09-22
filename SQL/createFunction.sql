@@ -178,7 +178,14 @@ CREATE OR REPLACE FUNCTION import_records_into_data_mart(file_path TEXT) RETURNS
     FROM temp_table T;
 
   TRUNCATE TABLE temp_table;
-  --PERFORM set_index(true);
+
+  --refresh mv--
+   -- refresh materialized view efficiency_compare_rpm;
+  --  refresh materialized view fuel_compare_speed;
+
+    --enable index--
+  PERFORM set_index(true);
+
   END;
   $$
   LANGUAGE plpgsql;

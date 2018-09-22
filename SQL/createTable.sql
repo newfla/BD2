@@ -131,3 +131,50 @@ CREATE INDEX if not exists acquisition_fact_step_index on acquisition_fact using
 
 CREATE INDEX if not exists acquisition_fact_km_index on acquisition_fact using hash(km_key);
 
+
+--Materialized View for Query 2--
+CREATE MATERIALIZED VIEW IF NOT EXISTS fuel_compare_speed AS
+  SELECT t1.id, t1.fuel_litres as consumo_litri_meno_di_50km_h, t2.fuel_litres as consumo_litri_meno_di_90km_h, t3.fuel_litres as consumo_litri_meno_di_130km_h
+  FROM
+       (SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+        FROM acquisition_fact
+        where speed_km_h <=50
+        GROUP BY test_id) t1
+         JOIN (
+              SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+              FROM acquisition_fact
+              where speed_km_h >=50 and speed_km_h<=90
+              GROUP BY test_id
+              ) t2
+           ON t1.id=t2.id
+         JOIN (
+              SELECT test_id as id , round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+              FROM acquisition_fact
+              where speed_km_h >=90
+              GROUP BY test_id
+              )t3
+           ON t1.id=t3.id;
+
+
+--Materialized View for Query 3--
+CREATE MATERIALIZED VIEW IF NOT EXISTS efficiency_compare_rpm AS
+  SELECT t1.id,  round((t1.rendimento*100)::numeric, 2) as efficiency_perc_max2000rpm, round((t2.rendimento*100)::numeric,2) as efficiency_perc_max3000rpm, round((t3.rendimento*100)::numeric,2) as efficiency_perc_over3000rpm
+  FROM
+       (SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
+        FROM acquisition_fact
+        where engine_RPM_by_ecu_rpm <2000
+        GROUP BY test_id) t1
+         JOIN (
+              SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
+              FROM acquisition_fact
+              where engine_RPM_by_ecu_rpm >=2000 and engine_RPM_by_ecu_rpm <=3000
+              GROUP BY test_id
+              ) t2
+           ON  t1.id=t2.id
+         JOIN (
+              SELECT  test_id as id, avg(power_kw)/( avg(fuel_g_s)/1000 * 458000) as rendimento
+              FROM acquisition_fact
+              where engine_RPM_by_ecu_rpm >=3000
+              GROUP BY test_id
+              )t3
+           ON t1.id=t3.id;

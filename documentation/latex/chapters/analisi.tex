@@ -161,8 +161,35 @@ In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti 
 \end{table}	
 Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
 \subsection{Aggiornamento delle viste materializzate}
-TODO.
-
+A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per velocizzare le query 3 e 4.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Efficiency\_compare\_rpm\_mv}
+		&
+		{\color[HTML]{FFFFFF}Fuel\_compare\_speed\_mv}\\
+		\begin{tabular}[c]{@{}l@{}}285.300\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}0,307s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,238s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}0,983s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,898s\end{tabular}\\
+	    \begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}2,464s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}2,173s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}3,004s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}2,863s\end{tabular}\\
+		
+	\end{tabular}
+	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
+\end{table}
+I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
 \section{Analisi performance query}
 In questa sezione verranno analizzate le query implementate nelle differenti implementazioni.
 
@@ -173,10 +200,56 @@ TODO.
 TODO.
 
 \subsection{Query 3}
-TODO.
+L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzione della query fino a un trecentesimo: in questo modo il costo di aggiornamento della vista viene immediatamente ammortizzato.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Senza vista}
+		&
+		{\color[HTML]{FFFFFF}Con vista}\\
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}0,905s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,020\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}2,286s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,026s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}2,925s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0.028s\end{tabular}\\
+		
+	\end{tabular}
+\caption{Test effettuati su schema non partizionato}
+\end{table}
 
 \subsection{Query 4}
-TODO.
+Si conferma quanto osservato nel caso della \textit{query 3}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Senza vista}
+		&
+		{\color[HTML]{FFFFFF}Con vista}\\
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}0,937s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,018s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}2,182s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,028s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}2,892s\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}0,030s\end{tabular}\\
+		
+	\end{tabular}
+\caption{Test effettuati su schema non partizionato}
+\end{table}
 
 \subsection{Query 5}
 TODO.

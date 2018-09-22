@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.15)  20 SEP 2018 10:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.15)  22 SEP 2018 20:35
 entering extended mode
 **./main.tex
 (main.tex
@@ -894,7 +894,16 @@ Overfull \hbox (16.29594pt too wide) in paragraph at lines 41--72
  [][] 
  []
 
-) [4]
+
+("C:\Users\newfl\AppData\Local\Programs\MiKTeX 2.9\tex\latex\listings\lstlang1.
+sty"
+File: lstlang1.sty 2018/09/02 1.7 listings language file
+)
+Underfull \hbox (badness 10000) in paragraph at lines 77--79
+
+ []
+
+[4] [5]) [6]
 \openout2 = `./chapters/analisi.aux'.
 
  (chapters/analisi.tex
@@ -918,16 +927,16 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <6> not available
 
 LaTeX Warning: Command \textcircled invalid in math mode on input line 46.
 
-[5
+[7
 
 
 
-] [6] [7]) [8]
+] [8] [9]) [10] [11]
 \openout2 = `./chapters/conclusioni.aux'.
 
  (chapters/conclusioni.tex
 Capitolo 3.
-) [9
+) [12
 
 
 
@@ -949,26 +958,28 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 15953 strings out of 492972
- 257478 string characters out of 3126622
- 728913 words of memory out of 3000000
- 19549 multiletter control sequences out of 15000+200000
- 12054 words of font info for 45 fonts, out of 3000000 for 9000
+ 16554 strings out of 492972
+ 263882 string characters out of 3126622
+ 760662 words of memory out of 3000000
+ 20097 multiletter control sequences out of 15000+200000
+ 12522 words of font info for 47 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,18n,43p,789b,1385s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 43i,18n,43p,789b,3146s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
 /cm/cmbx12.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
 blic/amsfonts/cm/cmcsc10.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/newfl/AppData/Local/Programs
 /MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/newfl/AppData/Loc
-al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Users/newf
-l/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
-C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmsy6.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
-/amsfonts/cm/cmti12.pfb>
-Output written on main.pdf (12 pages, 612043 bytes).
+al/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/newfl/
+AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl12.pfb><C:
+/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+msy10.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmsy6.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmti12.pfb><C:/Users/newfl/AppData/Local/Programs/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on main.pdf (15 pages, 653689 bytes).
 PDF statistics:
- 251 PDF objects out of 1000 (max. 8388607)
- 40 named destinations out of 1000 (max. 500000)
+ 328 PDF objects out of 1000 (max. 8388607)
+ 90 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 
