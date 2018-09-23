@@ -117,6 +117,7 @@ In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengo
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}	
 Dalla tabella emerge come il partizionamento comporti quasi un raddoppio del tempo necessario all'inserimento: ciò è dovuto al dover spalmare un singolo record della tabella temporanea su 4 differenti tabelle. Questo slow-down è risolvibile pensando a 4 inserimenti in parallelo: infatti le 4 tabelle, anche se logicamente collegate, durante l'inserimento non necessitano di condividere alcuna informazione.
+
 \subsection{Aggiornamento degli indici}
 In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti e dimensioni. Questi indici sono assolutamente necessari per velocizzare le query ma possono essere disabilitati durante la fase di update dello schema.
 \begin{table}[H]
@@ -160,6 +161,7 @@ In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti 
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}	
 Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
+
 \subsection{Aggiornamento delle viste materializzate}
 A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per velocizzare le query 3 e 4.
 \begin{table}[H]
@@ -191,15 +193,12 @@ A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento de
 \end{table}
 I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
 \section{Analisi performance query}
-In questa sezione verranno analizzate le query implementate nelle differenti implementazioni.
+In questa sezione verranno analizzate le query implementate nelle differenti implementazioni e presentati gli snippet di codice SQL
 
 \subsection{Query 1}
-TODO.
+TODO Onestamente non ho capito qui camm fa.
 
 \subsection{Query 2}
-TODO.
-
-\subsection{Query 3}
 L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzione della query fino a un trecentesimo: in questo modo il costo di aggiornamento della vista viene immediatamente ammortizzato.
 \begin{table}[H]
 	\centering
@@ -220,13 +219,38 @@ L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzion
 		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
 		& \begin{tabular}[c]{@{}l@{}}2,925s\end{tabular}
 		& \begin{tabular}[c]{@{}l@{}}0.028s\end{tabular}\\
-		
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
+\begin{lstlisting}[language=SQL]
+select *
+from fuel_compare_speed_mv;
+\end{lstlisting}
+\begin{lstlisting}[language=SQL]
+SELECT t1.id, t1.fuel_litres as consumo_litri_meno_di_50km_h, t2.fuel_litres as consumo_litri_meno_di_90km_h, t3.fuel_litres as consumo_litri_meno_di_130km_h
+FROM
+(SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+FROM acquisition_fact
+where speed_km_h <=50
+GROUP BY test_id) t1
+JOIN (
+SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+FROM acquisition_fact
+where speed_km_h >=50 and speed_km_h<=90
+GROUP BY test_id
+) t2
+ON t1.id=t2.id
+JOIN (
+SELECT test_id as id , round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
+FROM acquisition_fact
+where speed_km_h >=90
+GROUP BY test_id
+)t3
+ON t1.id=t3.id;
+\end{lstlisting}
 
-\subsection{Query 4}
-Si conferma quanto osservato nel caso della \textit{query 3}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
+\subsection{Query 3}
+Si conferma quanto osservato nel caso della \textit{query 2}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -250,9 +274,116 @@ Si conferma quanto osservato nel caso della \textit{query 3}: utilizzare una vis
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
+\begin{lstlisting}[language=SQL]
+select *
+from efficiency_compare_rpm_mv;
+\end{lstlisting}
+\begin{lstlisting}[language=SQL]
+SELECT t1.id,  round((t1.rendimento*100)::numeric, 2) as efficiency_perc_max2000rpm, round((t2.rendimento*100)::numeric,2) as efficiency_perc_max3000rpm, round((t3.rendimento*100)::numeric,2) as efficiency_perc_over3000rpm
+FROM
+(SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
+FROM acquisition_fact
+where engine_RPM_by_ecu_rpm <2000
+GROUP BY test_id) t1
+JOIN (
+SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
+FROM acquisition_fact
+where engine_RPM_by_ecu_rpm >=2000 and engine_RPM_by_ecu_rpm <=3000
+GROUP BY test_id
+) t2
+ON  t1.id=t2.id
+JOIN (
+SELECT  test_id as id, avg(power_kw)/( avg(fuel_g_s)/1000 * 458000) as rendimento
+FROM acquisition_fact
+where engine_RPM_by_ecu_rpm >=3000
+GROUP BY test_id
+)t3
+ON t1.id=t3.id;
+\end{lstlisting}
+
+\subsection{Query 4}
+TODO. Qui la query dovrebbe essere più veloce senza il partizionamento.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Partizionamento}
+		&
+		{\color[HTML]{FFFFFF}Tempo}\\
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}6,194s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,715s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}16,903s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}67,469s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,141s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
+		
+	\end{tabular}
+\end{table}	
+\begin{lstlisting}[language=SQL]
+NO Partizionamento
+\end{lstlisting}
+\begin{lstlisting}[language=SQL]
+SI partizionamento
+\end{lstlisting}
+
 
 \subsection{Query 5}
-TODO.
+TODO. Qui la query dovrebbe essere più veloce con il partizionamento.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ccc}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
+		&
+		{\color[HTML]{FFFFFF}Partizionamento}
+		&
+		{\color[HTML]{FFFFFF}Tempo}\\
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}6,194s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,715s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}16,903s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}67,469s\end{tabular}\\
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}24,141s\end{tabular}\\
+		\rowcolor[HTML]{C0C0C0}
+		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
+		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
+		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
+		
+	\end{tabular}
+\end{table}	
+\begin{lstlisting}[language=SQL]
+NO Partizionamento
+\end{lstlisting}
+\begin{lstlisting}[language=SQL]
+SI partizionamento
+\end{lstlisting}
 
-\subsection{Query 6}
-TODO.
+
