@@ -197,6 +197,13 @@ In questa sezione verranno analizzate le query implementate nelle differenti imp
 
 \subsection{Query 1}
 TODO Onestamente non ho capito qui camm fa.
+\begin{verbatim}
+Impatto ambientale medio in corse\\ da 5 km (CO2 e NOx, massa)
+\end{verbatim}
+\begin{lstlisting}[language=SQL]
+SELECT *
+FROM giggino
+\end{lstlisting}
 
 \subsection{Query 2}
 L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzione della query fino a un trecentesimo: in questo modo il costo di aggiornamento della vista viene immediatamente ammortizzato.
@@ -223,8 +230,8 @@ L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzion
 \caption{Test effettuati su schema non partizionato}
 \end{table}
 \begin{lstlisting}[language=SQL]
-select *
-from fuel_compare_speed_mv;
+SELECT *
+FROM fuel_compare_speed_mv;
 \end{lstlisting}
 \begin{lstlisting}[language=SQL]
 SELECT t1.id, t1.fuel_litres as consumo_litri_meno_di_50km_h, t2.fuel_litres as consumo_litri_meno_di_90km_h, t3.fuel_litres as consumo_litri_meno_di_130km_h

@@ -1,6 +1,7 @@
 \chapter{Progettazione}
-
+In questa capitolo sono esposte le scelte progettuali usate come linee guida per l'implementazione di una base di dati orientata al data warehousing.
 \section{Interrogazioni}
+Nella tabella \ref{table:query} sono riportate le query che si intende sottoporre al sistema. Ogni query ha ad essa associata un numero identificativo ed una descrizione dell'analisi che si intende effettuare.
 \begin{table}[H]
 	\centering
 \begin{tabular}{cll}
@@ -14,6 +15,7 @@
 	4                         & \begin{tabular}[c]{@{}l@{}}Per ogni test, media di NOx,\\ CO2, Potenza e Velocità\end{tabular}                     & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a\\ valutare le prestazioni ottenute\\ dall'esecuzione su di un \\ partizionamento verticale con le\\ colonne sparse tra più tabelle\end{tabular}                                            \\
 	5                         & \begin{tabular}[c]{@{}l@{}}Media e deviazione standard\\ delle temperature\end{tabular}                            & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a \\ valutare le prestazioni ottenute\\ dall'esecuzione con le colonne \\ concentrate su di un unica\\ tabella restituita da un\\ partizionamento verticale\end{tabular}                    
 \end{tabular}
+\label{table:query}
 \end{table}
 Le query sopra riportate hanno guidato lo sviluppo del sistema in ogni sua fase e hanno permesso di sperimentare differenti tecniche di implementazione di un sistema ROLAP.
 Una definizione formale delle stesse in linguaggio SQL sarà presentata più avanti nel corso di questo documento.
@@ -25,7 +27,7 @@ Di seguito è riportato il diagramma UML che rappresenta lo schema dei fatti imp
 	\caption{Diagaramma UML schema dei fatti}
 	\label{fig:ofm}
 \end{figure}
-È stata inoltre progettata e implementata una variante dello schema proposto che sfrutta la tecnica del partizionamento verticale ovvero la possibilità di dividere la tabella dei fatti in più tabelle, ognuna delle quali rappresenta una particolare sfaccettatura del \textit{fatto}. Il partizionamento viene solitamente adoperato per agevolare quelle interrogazioni che riguardano solo una particolare area di interesse. Questa tecnica presenta però l'inconveniente di dover aggiungere una chiave tra le tabelle al fine di poterle ricongiungere per analizzare il dato nella sua completezza e la duplicazione delle chiave surrogate associate alle dimensioni di analisi.
+È stata inoltre progettata e implementata una variante dello schema proposto che sfrutta la tecnica del partizionamento verticale ovvero la possibilità di dividere la tabella dei fatti in più tabelle, ognuna delle quali rappresenta una particolare sfaccettatura del \textit{fatto}. Il partizionamento viene solitamente adoperato per agevolare quelle interrogazioni che riguardano solo una particolare area di interesse. Per poter applicare questa tecnica è necessario aggiungere una chiave tra le tabelle al fine di poterle ricongiungere per analizzare il dato nella sua completezza.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{figures/class_fact_scheme_part} %TODO cambiare diagaramma
@@ -76,6 +78,7 @@ Per righe inconsistenti si intendono tutte quelle righe ove per valori indicanti
 \section{Viste Materializzate}
 Sono state create le seguenti viste materializzate al fine di implementare efficacemente le query 2 e 3.
 \\
+Il primo frammento dichiara una vista contenente per ogni corsa (\textit{test\_id}) il carburante consumato suddiviso per fasce di velocità.
 \begin{lstlisting}[language=SQL]
 CREATE MATERIALIZED VIEW IF NOT EXISTS fuel_compare_speed AS
 SELECT t1.id, t1.fuel_litres as consumo_litri_meno_di_50km_h, t2.fuel_litres as consumo_litri_meno_di_90km_h, t3.fuel_litres as consumo_litri_meno_di_130km_h
@@ -87,38 +90,39 @@ GROUP BY test_id) t1
 JOIN (
 SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
 FROM acquisition_fact
-where speed_km_h >=50 and speed_km_h<=90
+WHERE speed_km_h >=50 and speed_km_h<=90
 GROUP BY test_id
 ) t2
 ON t1.id=t2.id
 JOIN (
 SELECT test_id as id , round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
 FROM acquisition_fact
-where speed_km_h >=90
+WHERE speed_km_h >=90
 GROUP BY test_id
 )t3
 ON t1.id=t3.id;
 \end{lstlisting}
-	
+
+L'estratto a seguire serve a calcolare una vista materializzata riportante l'efficienza dell'auto nelle diverse corse. I risultati sono stati distribuiti su 3 fasce di rotazioni per minuto (RPM).
 \begin{lstlisting}[language=SQL]
 CREATE MATERIALIZED VIEW IF NOT EXISTS efficiency_compare_rpm AS
 SELECT t1.id,  round((t1.rendimento*100)::numeric, 2) as efficiency_perc_max2000rpm, round((t2.rendimento*100)::numeric,2) as efficiency_perc_max3000rpm, round((t3.rendimento*100)::numeric,2) as efficiency_perc_over3000rpm
 FROM
 (SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
 FROM acquisition_fact
-where engine_RPM_by_ecu_rpm <2000
+WHERE engine_RPM_by_ecu_rpm <2000
 GROUP BY test_id) t1
 JOIN (
 SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
 FROM acquisition_fact
-where engine_RPM_by_ecu_rpm >=2000 and engine_RPM_by_ecu_rpm <=3000
+WHERE engine_RPM_by_ecu_rpm >=2000 and engine_RPM_by_ecu_rpm <=3000
 GROUP BY test_id
 ) t2
 ON  t1.id=t2.id
 JOIN (
 SELECT  test_id as id, avg(power_kw)/( avg(fuel_g_s)/1000 * 458000) as rendimento
 FROM acquisition_fact
-where engine_RPM_by_ecu_rpm >=3000
+WHERE engine_RPM_by_ecu_rpm >=3000
 GROUP BY test_id
 )t3
 ON t1.id=t3.id;
