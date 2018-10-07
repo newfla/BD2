@@ -197,19 +197,9 @@ In questa sezione verranno analizzate le query implementate nelle differenti imp
 
 \subsection{Query I}
 \subsubsection{Impatto ambientale medio in corse da 5 km}
-%\begin{lstlisting}[language=SQL]
-%SELECT J.km_5, AVG(J.sum_co2) AS avg_co2, AVG(J.sum_nox) AS %avg_nox
-%FROM (
-%	SELECT H.km_5, SUM(F.co2_mass_g_s) AS sum_co2, SUM(F.nox_mass_g_s) AS sum_nox
-%	FROM acquisition_fact F, distance_hierarchy H
-%	WHERE (F.km_key::INT / 1000) = H.km_key
-%	GROUP BY F.test_id, H.km_5) J
-%GROUP BY J.km_5
-%\end{lstlisting} COSA CAMBIA?
-
 A seguire sono proposte due diverse formulazioni della stessa interrogazione. Il primo estratto chiede al sistema di recuperare l'appartenenza ad una certa tratta (di 5 km) dalla tabella \textit{distance\_hierarchy}. Nella seconda forma la tratta viene calcolata, eseguendo quindi un'operazione di roll-up implicito.
 \subsubsection{Roll-up esplicito}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT F.test_id, H.km_5, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
 FROM acquisition_fact F INNER JOIN distance_hierarchy H
 	ON (F.km_key = H.km_key)
@@ -217,14 +207,14 @@ GROUP BY F.test_id, H.km_5
 \end{lstlisting}
 
 \subsubsection{Roll-up implicito}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT F.test_id, FLOOR(F.km_key/5), AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
 FROM acquisition_fact F
 GROUP BY F.test_id, FLOOR(F.km_key/5)
 \end{lstlisting}
 
 \subsubsection{Esito}
-L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità di una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
+L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità per una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
 
 \subsection{Query C}
 \subsubsection{Consumo medio per intervalli di velocità prefissati}
@@ -305,8 +295,8 @@ Si conferma quanto osservato nel caso della \textit{query 2}: utilizzare una vis
 \caption{Test effettuati su schema non partizionato}
 \end{table}
 \begin{lstlisting}[language=SQL]
-select *
-from efficiency_compare_rpm_mv;
+SELECT *
+FROM efficiency_compare_rpm_mv;
 \end{lstlisting}
 \begin{lstlisting}[language=SQL]
 SELECT t1.id,  round((t1.rendimento*100)::numeric, 2) as efficiency_perc_max2000rpm, round((t2.rendimento*100)::numeric,2) as efficiency_perc_max3000rpm, round((t3.rendimento*100)::numeric,2) as efficiency_perc_over3000rpm
@@ -333,7 +323,22 @@ ON t1.id=t3.id;
 
 \subsection{Query M}
 \subsubsection{Per ogni test, media di NOx, CO2, Potenza e Velocità}
-TODO. Qui la query dovrebbe essere più veloce senza il partizionamento.
+Questa interrogazione è stata formulata per analizzare le performance del sistema in condizioni sconvenienti. Più precisamente, si intende osservare il calo di prestazioni dovuto all'overhead necessario alla ricostruzione dell'informazione a partire dalle tabelle partizionate. Si intende quindi operare su 4 colonne distribuite su 2 tabelle ottenute dal partizionamento verticale illustrato nella sezione ~\ref{sec:diagrams}.
+\subsubsection{Senza partizionamento}
+\begin{lstlisting}[language=SQL]
+SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
+FROM acquisition_fact F
+GROUP BY F.test_id
+\end{lstlisting}
+
+\subsubsection{Con partizionamento}
+\begin{lstlisting}[language=SQL]
+SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
+FROM acquisition_fact_particles P, acquisition_fact_general G
+WHERE P.row_id = G.row_id
+GROUP BY F.test_id
+\end{lstlisting}
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -366,18 +371,25 @@ TODO. Qui la query dovrebbe essere più veloce senza il partizionamento.
 		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
 		
 	\end{tabular}
-\end{table}	
-\begin{lstlisting}[language=SQL]
-NO Partizionamento
-\end{lstlisting}
-\begin{lstlisting}[language=SQL]
-SI partizionamento
-\end{lstlisting}
+\end{table}
 
 
 \subsection{Query T}
 \subsubsection{Media e deviazione standard delle temperature}
-TODO. Qui la query dovrebbe essere più veloce con il partizionamento.
+Inversamente allo scopo della query proposta precedentemente, in questo caso si vuole misurare lo speedup raggiungibile grazie ad un buon partizionamento. Per questo motivo l'interrogazione richiede informazioni di una stessa categoria, memorizzate su di una tabella dedicata alle acquisizioni effettuate dall'Engine Control Unit (ECU).
+\subsubsection{Interrogazione sull'intero dataset}
+\begin{lstlisting}[language=mySQL]
+SELECT F.test_id, AVG(F.engine_coolant_temperature_by_ecu_degc), STDDEV(F.engine_coolant_temperature_by_ecu_degc), AVG(F.ambient_air_temperature_by_ecu_degc), STDDEV(F.ambient_air_temperature_by_ecu_degc), AVG(F.engine_oil_temperature_by_ecu_degc), STDDEV(F.engine_oil_temperature_by_ecu_degc)
+FROM acquisition_fact F
+GROUP BY F.test_id
+\end{lstlisting}
+\subsubsection{Interrogazione su tabella ECU}
+\begin{lstlisting}[language=mySQL]
+SELECT E.test_id, AVG(E.engine_coolant_temperature_by_ecu_degc), STDDEV(E.engine_coolant_temperature_by_ecu_degc), AVG(E.ambient_air_temperature_by_ecu_degc), STDDEV(E.ambient_air_temperature_by_ecu_degc), AVG(E.engine_oil_temperature_by_ecu_degc), STDDEV(E.engine_oil_temperature_by_ecu_degc)
+FROM acquisition_fact_ecu E
+GROUP BY E.test_id
+\end{lstlisting}
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -411,11 +423,3 @@ TODO. Qui la query dovrebbe essere più veloce con il partizionamento.
 		
 	\end{tabular}
 \end{table}	
-\begin{lstlisting}[language=SQL]
-NO Partizionamento
-\end{lstlisting}
-\begin{lstlisting}[language=SQL]
-SI partizionamento
-\end{lstlisting}
-
-
