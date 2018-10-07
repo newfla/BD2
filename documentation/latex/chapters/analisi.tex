@@ -192,17 +192,42 @@ A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento de
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}
 I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
-\section{Analisi performance query}
+\section{Analisi Performance Query}
 In questa sezione verranno analizzate le query implementate nelle differenti implementazioni e presentati gli snippet di codice SQL
 
-\subsection{Query 1}
-\subsubsection{Impatto ambientale medio in corse da 5 km (CO2 e NOx, massa)}
+\subsection{Query I}
+\subsubsection{Impatto ambientale medio in corse da 5 km}
+%\begin{lstlisting}[language=SQL]
+%SELECT J.km_5, AVG(J.sum_co2) AS avg_co2, AVG(J.sum_nox) AS %avg_nox
+%FROM (
+%	SELECT H.km_5, SUM(F.co2_mass_g_s) AS sum_co2, SUM(F.nox_mass_g_s) AS sum_nox
+%	FROM acquisition_fact F, distance_hierarchy H
+%	WHERE (F.km_key::INT / 1000) = H.km_key
+%	GROUP BY F.test_id, H.km_5) J
+%GROUP BY J.km_5
+%\end{lstlisting} COSA CAMBIA?
+
+A seguire sono proposte due diverse formulazioni della stessa interrogazione. Il primo estratto chiede al sistema di recuperare l'appartenenza ad una certa tratta (di 5 km) dalla tabella \textit{distance\_hierarchy}. Nella seconda forma la tratta viene calcolata, eseguendo quindi un'operazione di roll-up implicito.
+\subsubsection{Roll-up esplicito}
 \begin{lstlisting}[language=SQL]
-SELECT *
-FROM giggino
+SELECT F.test_id, H.km_5, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
+FROM acquisition_fact F INNER JOIN distance_hierarchy H
+	ON (F.km_key = H.km_key)
+GROUP BY F.test_id, H.km_5
 \end{lstlisting}
 
-\subsection{Query 2}
+\subsubsection{Roll-up implicito}
+\begin{lstlisting}[language=SQL]
+SELECT F.test_id, FLOOR(F.km_key/5), AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
+FROM acquisition_fact F
+GROUP BY F.test_id, FLOOR(F.km_key/5)
+\end{lstlisting}
+
+\subsubsection{Esito}
+L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità di una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
+
+\subsection{Query C}
+\subsubsection{Consumo medio per intervalli di velocità prefissati}
 L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzione della query fino a un trecentesimo: in questo modo il costo di aggiornamento della vista viene immediatamente ammortizzato.
 \begin{table}[H]
 	\centering
@@ -253,7 +278,8 @@ GROUP BY test_id
 ON t1.id=t3.id;
 \end{lstlisting}
 
-\subsection{Query 3}
+\subsection{Query E}
+\subsubsection{Efficienza dell'auto per intervalli di RPM}
 Si conferma quanto osservato nel caso della \textit{query 2}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
 \begin{table}[H]
 	\centering
@@ -305,7 +331,8 @@ GROUP BY test_id
 ON t1.id=t3.id;
 \end{lstlisting}
 
-\subsection{Query 4}
+\subsection{Query M}
+\subsubsection{Per ogni test, media di NOx, CO2, Potenza e Velocità}
 TODO. Qui la query dovrebbe essere più veloce senza il partizionamento.
 \begin{table}[H]
 	\centering
@@ -348,7 +375,8 @@ SI partizionamento
 \end{lstlisting}
 
 
-\subsection{Query 5}
+\subsection{Query T}
+\subsubsection{Media e deviazione standard delle temperature}
 TODO. Qui la query dovrebbe essere più veloce con il partizionamento.
 \begin{table}[H]
 	\centering

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.8.27)  6 OCT 2018 19:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.8.27)  7 OCT 2018 16:30
 entering extended mode
 **./main.tex
 (main.tex
@@ -695,10 +695,16 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
-("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+("C:\Program Files\MiKTeX 2.9\tex\latex\fontawesome\fontawesome.sty"
+Package: fontawesome 2016/05/15 v4.6.3.1 font awesome icons
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\fontawesome\fontawesomesymbols-generic.
+tex")
+("C:\Program Files\MiKTeX 2.9\tex\latex\fontawesome\fontawesomesymbols-pdftex.t
+ex")) ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-Package hyperref Info: Option `colorlinks' set `false' on input line 65.
+Package hyperref Info: Option `colorlinks' set `false' on input line 66.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\biblatex\biblatex.sty"
 Package: biblatex 2016/12/05 v3.7 programmable bibliographies (PK/JW/AB)
@@ -947,22 +953,22 @@ LaTeX Warning: Label `fig:ofm' multiply defined.
 ) (chapters/analisi.aux) (chapters/conclusioni.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 106.
-LaTeX Font Info:    ... okay on input line 106.
-LaTeX Info: Redefining \it@ocap on input line 106.
-LaTeX Info: Redefining \it@ccap on input line 106.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 107.
+LaTeX Font Info:    ... okay on input line 107.
+LaTeX Info: Redefining \it@ocap on input line 107.
+LaTeX Info: Redefining \it@ccap on input line 107.
 
 
 File italian.ldf warning: 
@@ -970,7 +976,7 @@ italian.ldf    With OT1 encoding guillemets are poorly faked
 italian.ldf    Use T1 encoding
 italian.ldf    or specify a font with command \CaporaliFrom
 italian.ldf    See the documentation concerning the babel-italian typesetting 
-italian.ldf    on input line 106.
+italian.ldf    on input line 107.
 
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1033,7 +1039,7 @@ G,.JBIG2,.JB2,.eps]
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box34
-Package hyperref Info: Link coloring OFF on input line 106.
+Package hyperref Info: Link coloring OFF on input line 107.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 
@@ -1042,9 +1048,9 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count327
 )
-LaTeX Info: Redefining \ref on input line 106.
-LaTeX Info: Redefining \pageref on input line 106.
-LaTeX Info: Redefining \nameref on input line 106.
+LaTeX Info: Redefining \ref on input line 107.
+LaTeX Info: Redefining \pageref on input line 107.
+LaTeX Info: Redefining \nameref on input line 107.
 
 (main.out) (main.out)
 \@outlinefile=\write5
@@ -1062,21 +1068,21 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
  (main.bbl)
-Package biblatex Info: Reference section=0 on input line 106.
-Package biblatex Info: Reference segment=0 on input line 106.
+Package biblatex Info: Reference section=0 on input line 107.
+Package biblatex Info: Reference segment=0 on input line 107.
 
 <./figures/logo_blu.png, id=75, 501.7947pt x 499.8675pt>
 File: ./figures/logo_blu.png Graphic file (type png)
 
 <use ./figures/logo_blu.png>
-Package pdftex.def Info: ./figures/logo_blu.png used on input line 115.
+Package pdftex.def Info: ./figures/logo_blu.png used on input line 116.
 (pdftex.def)             Requested size: 318.66948pt x 317.45047pt.
-LaTeX Font Info:    Try loading font information for U+msa on input line 115.
+LaTeX Font Info:    Try loading font information for U+msa on input line 116.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 115.
+LaTeX Font Info:    Try loading font information for U+msb on input line 116.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -1102,7 +1108,11 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  (chapters/architettura.tex
 Capitolo 1.
-
+LaTeX Font Info:    Try loading font information for U+fontawesometwo on input 
+line 9.
+("C:\Program Files\MiKTeX 2.9\tex\latex\fontawesome\ufontawesometwo.fd"
+File: ufontawesometwo.fd 2016/05/22 Font definitions for U/fontawesometwo.
+)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [1
@@ -1110,12 +1120,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-<figures/class_fact_scheme.pdf, id=137, 597.51233pt x 845.0471pt>
+<figures/class_fact_scheme.pdf, id=137, 383.18156pt x 545.78906pt>
 File: figures/class_fact_scheme.pdf Graphic file (type pdf)
 
 <use figures/class_fact_scheme.pdf>
 Package pdftex.def Info: figures/class_fact_scheme.pdf used on input line 26.
-(pdftex.def)             Requested size: 334.60461pt x 473.22316pt.
+(pdftex.def)             Requested size: 214.5802pt x 305.63979pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1126,18 +1136,13 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2] <figures/class_fact_scheme_part.pdf, id=143, 845.0471pt x 597.51233pt>
+[2] <figures/class_fact_scheme_part.pdf, id=144, 712.91344pt x 612.03656pt>
 File: figures/class_fact_scheme_part.pdf Graphic file (type pdf)
 
 <use figures/class_fact_scheme_part.pdf>
 Package pdftex.def Info: figures/class_fact_scheme_part.pdf used on input line 
 33.
-(pdftex.def)             Requested size: 507.03218pt x 358.51016pt.
-
-Overfull \hbox (51.78807pt too wide) in paragraph at lines 33--34
- [][] 
- []
-
+(pdftex.def)             Requested size: 427.75136pt x 367.22476pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1178,22 +1183,22 @@ LaTeX Warning: Command \textcircled invalid in math mode on input line 46.
 
 
 
-] [9] [10] [11] [12]
-Underfull \vbox (badness 1515) has occurred while \output is active []
+] [9] [10] [11]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [13])
-[14]
+ [12]
+[13]) [14]
 \openout2 = `./chapters/conclusioni.aux'.
 
  (chapters/conclusioni.tex)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 147.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 147.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 148.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 148.
  (main.aux (chapters/sommario.aux)
 (chapters/architettura.aux) (chapters/analisi.aux) (chapters/conclusioni.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 147.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 147.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 148.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 148.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7DD8D9B4C2C50402352F79AC60C7EF53;1166.
+(rerunfilecheck)             Checksum: 610353B2E12C6C1F691C3CBD53F5E01B;1166.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -1203,25 +1208,27 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 16587 strings out of 493328
- 254642 string characters out of 3136532
- 567642 words of memory out of 3000000
- 19718 multiletter control sequences out of 15000+200000
- 12691 words of font info for 48 fonts, out of 3000000 for 9000
+ 18093 strings out of 493328
+ 275134 string characters out of 3136532
+ 586023 words of memory out of 3000000
+ 21197 multiletter control sequences out of 15000+200000
+ 12838 words of font info for 48 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,18n,44p,789b,3024s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmti12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (17 pages, 662878 bytes).
+ 43i,18n,44p,789b,3023s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontawesome/fontawesometwo.enc}<
+C:/Program Files/MiKTeX 2.9/fonts/type1/public/fontawesome/FontAwesome.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/public/amsfonts/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
+c/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmt
+i12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+
+Output written on main.pdf (17 pages, 734784 bytes).
 PDF statistics:
- 396 PDF objects out of 1000 (max. 8388607)
- 149 named destinations out of 1000 (max. 500000)
+ 467 PDF objects out of 1000 (max. 8388607)
+ 163 named destinations out of 1000 (max. 500000)
  160 words of extra memory for PDF output out of 10000 (max. 10000000)
 
