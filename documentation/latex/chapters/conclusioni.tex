@@ -18,31 +18,8 @@ A valle dell’analisi condotta si è arrivati alle seguenti riflessioni:
 %- Aumentare la quantità di memoria principale a disposizione per le operazioni di raggruppamento, ordinamento e join può sensibilmente migliorare l’esecuzione di alcune query, permettendo l’utilizzo di operazioni completamente in-memory.
 
 \begin{itemize}
-	\item Avere i dati precalcolati può avere un impatto notevole a favore dell’esecuzione della query, nonostante il numero di accessi alle pagine di memoria sia maggiore, almeno quando il calcolo è relativamente complesso e dipendente da più misure.
-	Di contro, avere dati precalcolati, porta ad un aumento generale dei tempi di ETL.
-	Quindi in caso di aumento notevole delle dimensioni del database potrebbe
-	risultare necessario, per soddisfare le deadline dell’ETL, utilizzare uno schema
-	senza i dati precalcolati, o almeno mantenere come precalcolati solo quelli più
-	utilizzati.
-	\item Quando una gerarchia è basata su unità di misura fisiche (ad esempio distanza o
-	tempo), può convenire effettuare operazioni di raggruppamento su espressioni
-	calcolabili sui fatti, invece che utilizzare l’implementazione tradizionale che
-	prevede una tabella separata per ogni gerarchia e utilizzo di join, che possono
-	appesantire notevolmente il calcolo.
-	\item Dal punto di vista dello spazio fisico occupato è stato osservato che, con circa due
-	milioni di registrazioni nella tabella dei fatti, memorizzare i dati precalcolati porta
-	ad un aumento di circa il 17.5\% (da 639 a 744 MB). In un contesto di Data
-	Warehouse un incremento del genere non può essere comunque considerato
-	critico, soprattutto rispetto al guadagno in termini di tempo.
-	\item L’utilizzo della vista materializzata ha mostrato, come previsto, un vantaggio
-	notevole, con un rallentamento accettabile della fase di ETL di aggiornamento
-	delle viste.
-	\item Il partizionamento non ha mostrato evidenti miglioramenti che ne giustifichino
-	l’utilizzo. Infatti, si è registrato un peggioramento netto della fase di ETL (in cui la
-	durata dei passi 3 e 4 triplica) e delle query che prevedono la ricostruzione parziale
-	o totale del fatto, avvantaggiando solamente (e naturalmente) le query circoscritte
-	ad una singola partizione. Tuttavia, prima di screditare completamente questa
-	tecnica, bisognerebbe prendere in considerazione che questa andrebbe valutata
-	in contesti in cui il numero e l’importanza di query circoscritte a singole partizioni
-	potrebbe effettivamente portare a dei benefici.
+	\item Quando una gerarchia coincide con scalare un'unità di misura ci si può imbattere in allocazioni massicce di informazioni ridondanti, senza un gadagno netto in termini temporali. In questo scenario si può quindi optare per operazioni di raggruppamento su espressioni	calcolabili sui fatti, invece che utilizzare l’implementazione tradizionale che prevede una tabella separata per ogni gerarchia e utilizzo di join, che possono appesantire notevolmente il calcolo.
+	\item L’utilizzo della vista materializzata ha mostrato, come previsto, un vantaggio notevole, con un rallentamento accettabile della fase di ETL di aggiornamento delle viste.
+	\item Il partizionamento non ha mostrato evidenti miglioramenti che ne giustifichino l’utilizzo. Infatti, si è registrato un peggioramento netto della fase di ETL e delle query che prevedono la ricostruzione del fatto, avvantaggiando solamente (e naturalmente) le query circoscritte ad una singola partizione. Tuttavia, prima di screditare completamente questa tecnica, bisognerebbe prendere in considerazione che questa andrebbe valutata
+	in contesti in cui il numero e l’importanza di query circoscritte a singole partizioni potrebbe effettivamente portare a dei benefici.
 \end{itemize}

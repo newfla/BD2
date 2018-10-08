@@ -18,74 +18,74 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.4}Viste Materializzate}{5}{section.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}Analisi}{8}{chapter.2}
+\contentsline {chapter}{\numberline {2}Analisi}{7}{chapter.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Prestazioni ETL}{8}{section.2.1}
+\contentsline {section}{\numberline {2.1}Prestazioni ETL}{7}{section.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.1}Trasformazione in CSV}{8}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.1}Trasformazione in CSV}{7}{subsection.2.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.2}Import in Tabella Temporanea}{9}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.2}Import in Tabella Temporanea}{8}{subsection.2.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.3}Import nello Schema}{9}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.3}Import nello Schema}{8}{subsection.2.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.4}Aggiornamento degli Indici}{10}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.4}Aggiornamento degli Indici}{9}{subsection.2.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.5}Aggiornamento delle Viste Materializzate}{10}{subsection.2.1.5}
+\contentsline {subsection}{\numberline {2.1.5}Aggiornamento delle Viste Materializzate}{9}{subsection.2.1.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Prestazioni Query}{11}{section.2.2}
+\contentsline {section}{\numberline {2.2}Prestazioni Query}{10}{section.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.1}Query I}{11}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.1}Query I}{10}{subsection.2.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Impatto ambientale medio in corse da 5 km}{11}{subsubsection*.3}
+\contentsline {subsubsection}{Impatto ambientale medio in corse da 5 km}{10}{subsubsection*.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Roll-up esplicito}{11}{subsubsection*.4}
+\contentsline {subsubsection}{Roll-up esplicito}{10}{subsubsection*.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Roll-up implicito}{11}{subsubsection*.5}
+\contentsline {subsubsection}{Roll-up implicito}{10}{subsubsection*.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Esito}{11}{subsubsection*.6}
+\contentsline {subsubsection}{Esito}{10}{subsubsection*.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.2}Query C}{12}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.2}Query C}{11}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Consumo medio per intervalli di velocit\IeC {\`a} prefissati}{12}{subsubsection*.7}
+\contentsline {subsubsection}{Consumo medio per intervalli di velocit\IeC {\`a} prefissati}{11}{subsubsection*.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.3}Query E}{13}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.3}Query E}{12}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Efficienza dell'auto per intervalli di RPM}{13}{subsubsection*.8}
+\contentsline {subsubsection}{Efficienza dell'auto per intervalli di RPM}{12}{subsubsection*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.4}Query M}{14}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.4}Query M}{13}{subsection.2.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Per ogni test, media di NOx, CO2, Potenza e Velocit\IeC {\`a}}{14}{subsubsection*.9}
+\contentsline {subsubsection}{Per ogni test, media di NOx, CO2, Potenza e Velocit\IeC {\`a}}{13}{subsubsection*.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Senza partizionamento}{14}{subsubsection*.10}
+\contentsline {subsubsection}{Senza partizionamento}{13}{subsubsection*.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Con partizionamento}{14}{subsubsection*.11}
+\contentsline {subsubsection}{Con partizionamento}{13}{subsubsection*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.5}Query T}{14}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.5}Query T}{13}{subsection.2.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Media e deviazione standard delle temperature}{14}{subsubsection*.12}
+\contentsline {subsubsection}{Media e deviazione standard delle temperature}{13}{subsubsection*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Interrogazione sull'intero dataset}{15}{subsubsection*.13}
+\contentsline {subsubsection}{Interrogazione sull'intero dataset}{14}{subsubsection*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Interrogazione su tabella ECU}{15}{subsubsection*.14}
+\contentsline {subsubsection}{Interrogazione su tabella ECU}{14}{subsubsection*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Conclusioni}{16}{chapter.3}
+\contentsline {chapter}{\numberline {3}Conclusioni}{15}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Sorgenti Java}{18}{appendix.Alph1}
+\contentsline {chapter}{\numberline {A}Sorgenti Java}{17}{appendix.Alph1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Main.java}{18}{subsubsection*.15}
+\contentsline {subsubsection}{Main.java}{17}{subsubsection*.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Multiplier.java}{22}{subsubsection*.16}
+\contentsline {subsubsection}{Multiplier.java}{21}{subsubsection*.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Cleaner.java}{23}{subsubsection*.17}
+\contentsline {subsubsection}{Cleaner.java}{22}{subsubsection*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Transformer.java}{27}{subsubsection*.18}
+\contentsline {subsubsection}{Transformer.java}{26}{subsubsection*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {B}Sorgenti SQL}{31}{appendix.Alph2}
+\contentsline {chapter}{\numberline {B}Sorgenti SQL}{30}{appendix.Alph2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createFunction.sql}{31}{subsubsection*.19}
+\contentsline {subsubsection}{createFunction.sql}{30}{subsubsection*.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createFunctionPart.sql}{36}{subsubsection*.20}
+\contentsline {subsubsection}{createFunctionPart.sql}{35}{subsubsection*.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createTable.sql}{43}{subsubsection*.21}
+\contentsline {subsubsection}{createTable.sql}{42}{subsubsection*.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createTablePart.sql}{48}{subsubsection*.22}
+\contentsline {subsubsection}{createTablePart.sql}{47}{subsubsection*.22}
