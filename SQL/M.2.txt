@@ -1,0 +1,7 @@
+-- per ogni test, media di NOx, CO2, Potenza e Velocita' (con partizionamento)
+
+SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw),
+AVG(F.speed_km_h)
+FROM acquisition_fact_particles P, acquisition_fact_general G
+WHERE P.row_id = G.row_id
+GROUP BY F.test_id
