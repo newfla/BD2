@@ -6,13 +6,13 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {1}Progettazione}{1}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}Interrogazioni}{1}{section.1.1}
+\contentsline {section}{\numberline {1.1}Interrogazioni}{2}{section.1.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.2}Diagrammi}{2}{section.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Schema Principale}{2}{section*.3}
+\contentsline {subsubsection}{Schema Principale}{2}{subsubsection*.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Partizionamento Verticale}{3}{section*.4}
+\contentsline {subsubsection}{Partizionamento Verticale}{3}{subsubsection*.4}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.3}ETL}{5}{section.1.3}
 \defcounter {refsection}{0}\relax 
@@ -24,46 +24,46 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.1.1}Trasformazione in CSV}{8}{subsection.2.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.2}Import in tabella temporanea}{9}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.2}Import in Tabella Temporanea}{9}{subsection.2.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.3}Import nello schema}{9}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.3}Import nello Schema}{9}{subsection.2.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.4}Aggiornamento degli indici}{10}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.4}Aggiornamento degli Indici}{10}{subsection.2.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1.5}Aggiornamento delle viste materializzate}{10}{subsection.2.1.5}
+\contentsline {subsection}{\numberline {2.1.5}Aggiornamento delle Viste Materializzate}{10}{subsection.2.1.5}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2.2}Analisi Performance Query}{11}{section.2.2}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.1}Query I}{11}{subsection.2.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Impatto ambientale medio in corse da 5 km}{11}{section*.5}
+\contentsline {subsubsection}{Impatto ambientale medio in corse da 5 km}{11}{subsubsection*.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Roll-up esplicito}{11}{section*.6}
+\contentsline {subsubsection}{Roll-up esplicito}{11}{subsubsection*.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Roll-up implicito}{11}{section*.7}
+\contentsline {subsubsection}{Roll-up implicito}{11}{subsubsection*.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Esito}{11}{section*.8}
+\contentsline {subsubsection}{Esito}{11}{subsubsection*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.2}Query C}{11}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.2}Query C}{12}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Consumo medio per intervalli di velocit\IeC {\`a} prefissati}{11}{section*.9}
+\contentsline {subsubsection}{Consumo medio per intervalli di velocit\IeC {\`a} prefissati}{12}{subsubsection*.9}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.3}Query E}{13}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Efficienza dell'auto per intervalli di RPM}{13}{section*.10}
+\contentsline {subsubsection}{Efficienza dell'auto per intervalli di RPM}{13}{subsubsection*.10}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {2.2.4}Query M}{14}{subsection.2.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Per ogni test, media di NOx, CO2, Potenza e Velocit\IeC {\`a}}{14}{section*.11}
+\contentsline {subsubsection}{Per ogni test, media di NOx, CO2, Potenza e Velocit\IeC {\`a}}{14}{subsubsection*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Senza partizionamento}{14}{section*.12}
+\contentsline {subsubsection}{Senza partizionamento}{14}{subsubsection*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Con partizionamento}{14}{section*.13}
+\contentsline {subsubsection}{Con partizionamento}{14}{subsubsection*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.5}Query T}{15}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.5}Query T}{14}{subsection.2.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Media e deviazione standard delle temperature}{15}{section*.14}
+\contentsline {subsubsection}{Media e deviazione standard delle temperature}{14}{subsubsection*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Interrogazione sull'intero dataset}{15}{section*.15}
+\contentsline {subsubsection}{Interrogazione sull'intero dataset}{15}{subsubsection*.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Interrogazione su tabella ECU}{15}{section*.16}
+\contentsline {subsubsection}{Interrogazione su tabella ECU}{15}{subsubsection*.16}

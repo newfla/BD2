@@ -45,7 +45,7 @@ I dati ottenuti si riferiscono ad una media aritmetica ottenuta testando 200 fil
 
 Questa fase mette in luce la buona qualità dei dati forniti dall'istituto: ci si aspetta in media di perdere pochissimi dati a causa di inconsistenze. Per quanto riguarda invece le dimensioni si nota come il formato Comma-separated values sia leggermente meno efficiente nella compressione rispetto al formato proprietario di Microsoft$^{\tiny{\textregistered}}$ ma al tempo stesso permetta una più veloce elaborazione.
 
-\subsection{Import in tabella temporanea}
+\subsection{Import in Tabella Temporanea}
 Al fine di importare i file CSV nella tabella dei fatti ci si appoggia ad una tabella temporanea al fine di agevolare le operazioni successive. Questa tabella viene troncata alla fine della procedura. L'import sfrutta la funzione \textit{COPY} messa a disposizione dal DBMS PostgreSQL.
 
 \begin{table}[H]
@@ -72,7 +72,7 @@ Al fine di importare i file CSV nella tabella dei fatti ci si appoggia ad una ta
 \end{table}	
 I risultati mostrano la bontà della funzione \textit{COPY} che sfruttando un inserimento batch di 1000 righe per volta riesce ad abbattere in modo consistente i tempi.
 
-\subsection{Import nello schema}
+\subsection{Import nello Schema}
 In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengono travasati nello schema proposto dopo aver disabilitato tutti gli indici. Le prove effettuate prendono in considerazione diverse dimensioni della tabella dei fatti oltre al caso in cui lo schema risulti partizionato.
 \begin{table}[H]
 	\centering
@@ -118,7 +118,7 @@ In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengo
 \end{table}	
 Dalla tabella emerge come il partizionamento comporti quasi un raddoppio del tempo necessario all'inserimento: ciò è dovuto al dover spalmare un singolo record della tabella temporanea su 4 differenti tabelle. Questo slow-down è risolvibile pensando a 4 inserimenti in parallelo: infatti le 4 tabelle, anche se logicamente collegate, durante l'inserimento non necessitano di condividere alcuna informazione.
 
-\subsection{Aggiornamento degli indici}
+\subsection{Aggiornamento degli Indici}
 In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti e dimensioni. Questi indici sono assolutamente necessari per velocizzare le query ma possono essere disabilitati durante la fase di update dello schema.
 \begin{table}[H]
 	\centering
@@ -162,8 +162,8 @@ In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti 
 \end{table}	
 Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
 
-\subsection{Aggiornamento delle viste materializzate}
-A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per velocizzare le query 3 e 4.
+\subsection{Aggiornamento delle Viste Materializzate}
+A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per velocizzare le query \textbf{E} ed \textbf{M}.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -241,31 +241,27 @@ L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzion
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT *
 FROM fuel_compare_speed_mv;
 \end{lstlisting}
-\begin{lstlisting}[language=SQL]
-SELECT t1.id, t1.fuel_litres as consumo_litri_meno_di_50km_h, t2.fuel_litres as consumo_litri_meno_di_90km_h, t3.fuel_litres as consumo_litri_meno_di_130km_h
+\begin{lstlisting}[language=mySQL]
+SELECT t1.id, t1.fuel_litres AS consumo_litri_meno_di_50km_h, t2.fuel_litres AS consumo_litri_meno_di_90km_h, t3.fuel_litres AS consumo_litri_meno_di_130km_h
 FROM
-(SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
-FROM acquisition_fact
-where speed_km_h <=50
-GROUP BY test_id) t1
+	(SELECT test_id AS id, ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
+	FROM acquisition_fact
+	WHERE speed_km_h <= 50
+	GROUP BY test_id) t1
 JOIN (
-SELECT test_id as id, round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
-FROM acquisition_fact
-where speed_km_h >=50 and speed_km_h<=90
-GROUP BY test_id
-) t2
-ON t1.id=t2.id
+	SELECT test_id as id, ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
+	FROM acquisition_fact
+	WHERE speed_km_h >= 50 AND speed_km_h <= 90
+	GROUP BY test_id) t2 ON t1.id = t2.id
 JOIN (
-SELECT test_id as id , round(SUM((fuel_g_s)/1000)::numeric/0.8,2) AS fuel_litres, round(AVG(velocity_km_h)::numeric,1) as average_speed_km_h
-FROM acquisition_fact
-where speed_km_h >=90
-GROUP BY test_id
-)t3
-ON t1.id=t3.id;
+	SELECT test_id AS id , ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
+	FROM acquisition_fact
+	WHERE speed_km_h >= 90
+	GROUP BY test_id) t3 ON t1.id=t3.id;
 \end{lstlisting}
 
 \subsection{Query E}
@@ -294,45 +290,41 @@ Si conferma quanto osservato nel caso della \textit{query 2}: utilizzare una vis
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT *
 FROM efficiency_compare_rpm_mv;
 \end{lstlisting}
-\begin{lstlisting}[language=SQL]
-SELECT t1.id,  round((t1.rendimento*100)::numeric, 2) as efficiency_perc_max2000rpm, round((t2.rendimento*100)::numeric,2) as efficiency_perc_max3000rpm, round((t3.rendimento*100)::numeric,2) as efficiency_perc_over3000rpm
+\begin{lstlisting}[language=mySQL]
+SELECT t1.id,  ROUND((t1.rendimento*100)::NUMERIC, 2) AS efficiency_perc_max2000rpm, ROUND((t2.rendimento*100)::NUMERIC,2) AS efficiency_perc_max3000rpm, ROUND((t3.rendimento*100)::NUMERIC,2) AS efficiency_perc_over3000rpm
 FROM
-(SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
-FROM acquisition_fact
-where engine_RPM_by_ecu_rpm <2000
-GROUP BY test_id) t1
+	(SELECT test_id AS id, AVG(power_kw)/ (AVG(fuel_g_s)/1000 * 458000) AS rendimento
+	FROM acquisition_fact
+	WHERE engine_RPM_by_ecu_rpm < 2000
+	GROUP BY test_id) t1
 JOIN (
-SELECT test_id as id, avg(power_kw)/ (avg(fuel_g_s)/1000 * 458000) as rendimento
-FROM acquisition_fact
-where engine_RPM_by_ecu_rpm >=2000 and engine_RPM_by_ecu_rpm <=3000
-GROUP BY test_id
-) t2
-ON  t1.id=t2.id
+	SELECT test_id AS id, AVG(power_kw)/ (AVG(fuel_g_s)/1000 * 458000) AS rendimento
+	FROM acquisition_fact
+	WHERE engine_RPM_by_ecu_rpm >= 2000 AND engine_RPM_by_ecu_rpm <= 3000
+	GROUP BY test_id) t2 ON  t1.id = t2.id
 JOIN (
-SELECT  test_id as id, avg(power_kw)/( avg(fuel_g_s)/1000 * 458000) as rendimento
-FROM acquisition_fact
-where engine_RPM_by_ecu_rpm >=3000
-GROUP BY test_id
-)t3
-ON t1.id=t3.id;
+	SELECT  test_id AS id, AVG(power_kw)/( AVG(fuel_g_s)/1000 * 458000) AS rendimento
+	FROM acquisition_fact
+	WHERE engine_RPM_by_ecu_rpm >= 3000
+	GROUP BY test_id) t3 ON t1.id = t3.id;
 \end{lstlisting}
 
 \subsection{Query M}
 \subsubsection{Per ogni test, media di NOx, CO2, Potenza e Velocità}
 Questa interrogazione è stata formulata per analizzare le performance del sistema in condizioni sconvenienti. Più precisamente, si intende osservare il calo di prestazioni dovuto all'overhead necessario alla ricostruzione dell'informazione a partire dalle tabelle partizionate. Si intende quindi operare su 4 colonne distribuite su 2 tabelle ottenute dal partizionamento verticale illustrato nella sezione ~\ref{sec:diagrams}.
 \subsubsection{Senza partizionamento}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
 FROM acquisition_fact F
 GROUP BY F.test_id
 \end{lstlisting}
 
 \subsubsection{Con partizionamento}
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}[language=mySQL]
 SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
 FROM acquisition_fact_particles P, acquisition_fact_general G
 WHERE P.row_id = G.row_id

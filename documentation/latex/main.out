@@ -6,10 +6,10 @@
 \BOOKMARK [0][-]{chapter.2}{Analisi}{}% 6
 \BOOKMARK [1][-]{section.2.1}{ETL}{chapter.2}% 7
 \BOOKMARK [2][-]{subsection.2.1.1}{Trasformazione in CSV}{section.2.1}% 8
-\BOOKMARK [2][-]{subsection.2.1.2}{Import in tabella temporanea}{section.2.1}% 9
-\BOOKMARK [2][-]{subsection.2.1.3}{Import nello schema}{section.2.1}% 10
-\BOOKMARK [2][-]{subsection.2.1.4}{Aggiornamento degli indici}{section.2.1}% 11
-\BOOKMARK [2][-]{subsection.2.1.5}{Aggiornamento delle viste materializzate}{section.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.1.2}{Import in Tabella Temporanea}{section.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.1.3}{Import nello Schema}{section.2.1}% 10
+\BOOKMARK [2][-]{subsection.2.1.4}{Aggiornamento degli Indici}{section.2.1}% 11
+\BOOKMARK [2][-]{subsection.2.1.5}{Aggiornamento delle Viste Materializzate}{section.2.1}% 12
 \BOOKMARK [1][-]{section.2.2}{Analisi Performance Query}{chapter.2}% 13
 \BOOKMARK [2][-]{subsection.2.2.1}{Query I}{section.2.2}% 14
 \BOOKMARK [2][-]{subsection.2.2.2}{Query C}{section.2.2}% 15
