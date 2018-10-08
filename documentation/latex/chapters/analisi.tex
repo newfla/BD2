@@ -1,7 +1,7 @@
 \chapter{Analisi}
 In questo capitolo sono riportati i risultati e i tempi ottenuti per ogni fase: dalle procedure ETL all'esecuzione delle query.
 
-\section{ETL}
+\section{Prestazioni ETL}
 \subsection{Trasformazione in CSV}
 In questa sezione copriremo un'analisi dei tempi ottenuti nella fase che permette, a partire dai dati originali, di ottenere un file in formato CSV contenente i dati ripuliti da inconsistenze e in un formato adatto ad essere importato nel Datawarehouse.
 In particolare nella fase di puliza, a partire dal file XSLX, si estraggono unicamente i record dove non appaiono valori negativi per quantità intrinsecamente positive (concentrazione, volume, ecc.); per i record ove manca il valore "relative" e/o la distanza percorsa si procede ad un calcolo a partire dall'ultima rilevazione valida estratta. Inoltre tutte le righe che presentano una chiara assenza di dati (70\% delle colonne) vengono scartate. Infine, durante la fase di trasformazione, per ogni file viene generata una data e un test\_id e per separare la parte intera da quella decimale si sostituisce la virgola con il punto.\\
@@ -192,7 +192,7 @@ A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento de
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}
 I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
-\section{Analisi Performance Query}
+\section{Prestazioni Query}
 In questa sezione verranno analizzate le query implementate nelle differenti implementazioni e presentati gli snippet di codice SQL
 
 \subsection{Query I}
@@ -266,7 +266,7 @@ JOIN (
 
 \subsection{Query E}
 \subsubsection{Efficienza dell'auto per intervalli di RPM}
-Si conferma quanto osservato nel caso della \textit{query 2}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
+Si conferma quanto osservato nel caso della query \textbf{C}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}

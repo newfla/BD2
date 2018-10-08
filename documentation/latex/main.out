@@ -1,18 +1,21 @@
 \BOOKMARK [0][-]{chapter.1}{Progettazione}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Interrogazioni}{chapter.1}% 2
 \BOOKMARK [1][-]{section.1.2}{Diagrammi}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{ETL}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.3}{Extract, Transform, Load}{chapter.1}% 4
 \BOOKMARK [1][-]{section.1.4}{Viste Materializzate}{chapter.1}% 5
 \BOOKMARK [0][-]{chapter.2}{Analisi}{}% 6
-\BOOKMARK [1][-]{section.2.1}{ETL}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.1}{Prestazioni ETL}{chapter.2}% 7
 \BOOKMARK [2][-]{subsection.2.1.1}{Trasformazione in CSV}{section.2.1}% 8
 \BOOKMARK [2][-]{subsection.2.1.2}{Import in Tabella Temporanea}{section.2.1}% 9
 \BOOKMARK [2][-]{subsection.2.1.3}{Import nello Schema}{section.2.1}% 10
 \BOOKMARK [2][-]{subsection.2.1.4}{Aggiornamento degli Indici}{section.2.1}% 11
 \BOOKMARK [2][-]{subsection.2.1.5}{Aggiornamento delle Viste Materializzate}{section.2.1}% 12
-\BOOKMARK [1][-]{section.2.2}{Analisi Performance Query}{chapter.2}% 13
+\BOOKMARK [1][-]{section.2.2}{Prestazioni Query}{chapter.2}% 13
 \BOOKMARK [2][-]{subsection.2.2.1}{Query I}{section.2.2}% 14
 \BOOKMARK [2][-]{subsection.2.2.2}{Query C}{section.2.2}% 15
 \BOOKMARK [2][-]{subsection.2.2.3}{Query E}{section.2.2}% 16
 \BOOKMARK [2][-]{subsection.2.2.4}{Query M}{section.2.2}% 17
 \BOOKMARK [2][-]{subsection.2.2.5}{Query T}{section.2.2}% 18
+\BOOKMARK [0][-]{chapter.3}{Conclusioni}{}% 19
+\BOOKMARK [0][-]{appendix.Alph1}{Sorgenti Java}{}% 20
+\BOOKMARK [0][-]{appendix.Alph2}{Sorgenti SQL}{}% 21
