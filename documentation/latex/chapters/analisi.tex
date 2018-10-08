@@ -199,20 +199,9 @@ In questa sezione verranno analizzate le query implementate nelle differenti imp
 \subsubsection{Impatto ambientale medio in corse da 5 km}
 A seguire sono proposte due diverse formulazioni della stessa interrogazione. Il primo estratto chiede al sistema di recuperare l'appartenenza ad una certa tratta (di 5 km) dalla tabella \textit{distance\_hierarchy}. Nella seconda forma la tratta viene calcolata, eseguendo quindi un'operazione di roll-up implicito.
 \subsubsection{Roll-up esplicito}
-\begin{lstlisting}[language=mySQL]
-SELECT F.test_id, H.km_5, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
-FROM acquisition_fact F INNER JOIN distance_hierarchy H
-	ON (F.km_key = H.km_key)
-GROUP BY F.test_id, H.km_5
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/I1.sql}
 \subsubsection{Roll-up implicito}
-\begin{lstlisting}[language=mySQL]
-SELECT F.test_id, FLOOR(F.km_key/5), AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s)
-FROM acquisition_fact F
-GROUP BY F.test_id, FLOOR(F.km_key/5)
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/I2.sql}
 \subsubsection{Esito}
 L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità per una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
 
@@ -241,29 +230,7 @@ L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzion
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
-\begin{lstlisting}[language=mySQL]
-SELECT *
-FROM fuel_compare_speed_mv;
-\end{lstlisting}
-\begin{lstlisting}[language=mySQL]
-SELECT t1.id, t1.fuel_litres AS consumo_litri_meno_di_50km_h, t2.fuel_litres AS consumo_litri_meno_di_90km_h, t3.fuel_litres AS consumo_litri_meno_di_130km_h
-FROM
-	(SELECT test_id AS id, ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
-	FROM acquisition_fact
-	WHERE speed_km_h <= 50
-	GROUP BY test_id) t1
-JOIN (
-	SELECT test_id as id, ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
-	FROM acquisition_fact
-	WHERE speed_km_h >= 50 AND speed_km_h <= 90
-	GROUP BY test_id) t2 ON t1.id = t2.id
-JOIN (
-	SELECT test_id AS id , ROUND(SUM((fuel_g_s)/1000)::NUMERIC/0.8,2) AS fuel_litres, ROUND(AVG(velocity_km_h)::NUMERIC,1) AS average_speed_km_h
-	FROM acquisition_fact
-	WHERE speed_km_h >= 90
-	GROUP BY test_id) t3 ON t1.id=t3.id;
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/C.sql}
 \subsection{Query E}
 \subsubsection{Efficienza dell'auto per intervalli di RPM}
 Si conferma quanto osservato nel caso della query \textbf{C}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
@@ -290,47 +257,14 @@ Si conferma quanto osservato nel caso della query \textbf{C}: utilizzare una vis
 	\end{tabular}
 \caption{Test effettuati su schema non partizionato}
 \end{table}
-\begin{lstlisting}[language=mySQL]
-SELECT *
-FROM efficiency_compare_rpm_mv;
-\end{lstlisting}
-\begin{lstlisting}[language=mySQL]
-SELECT t1.id,  ROUND((t1.rendimento*100)::NUMERIC, 2) AS efficiency_perc_max2000rpm, ROUND((t2.rendimento*100)::NUMERIC,2) AS efficiency_perc_max3000rpm, ROUND((t3.rendimento*100)::NUMERIC,2) AS efficiency_perc_over3000rpm
-FROM
-	(SELECT test_id AS id, AVG(power_kw)/ (AVG(fuel_g_s)/1000 * 458000) AS rendimento
-	FROM acquisition_fact
-	WHERE engine_RPM_by_ecu_rpm < 2000
-	GROUP BY test_id) t1
-JOIN (
-	SELECT test_id AS id, AVG(power_kw)/ (AVG(fuel_g_s)/1000 * 458000) AS rendimento
-	FROM acquisition_fact
-	WHERE engine_RPM_by_ecu_rpm >= 2000 AND engine_RPM_by_ecu_rpm <= 3000
-	GROUP BY test_id) t2 ON  t1.id = t2.id
-JOIN (
-	SELECT  test_id AS id, AVG(power_kw)/( AVG(fuel_g_s)/1000 * 458000) AS rendimento
-	FROM acquisition_fact
-	WHERE engine_RPM_by_ecu_rpm >= 3000
-	GROUP BY test_id) t3 ON t1.id = t3.id;
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/E.sql}
 \subsection{Query M}
 \subsubsection{Per ogni test, media di NOx, CO2, Potenza e Velocità}
 Questa interrogazione è stata formulata per analizzare le performance del sistema in condizioni sconvenienti. Più precisamente, si intende osservare il calo di prestazioni dovuto all'overhead necessario alla ricostruzione dell'informazione a partire dalle tabelle partizionate. Si intende quindi operare su 4 colonne distribuite su 2 tabelle ottenute dal partizionamento verticale illustrato nella sezione ~\ref{sec:diagrams}.
 \subsubsection{Senza partizionamento}
-\begin{lstlisting}[language=mySQL]
-SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
-FROM acquisition_fact F
-GROUP BY F.test_id
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/M1.sql}
 \subsubsection{Con partizionamento}
-\begin{lstlisting}[language=mySQL]
-SELECT F.test_id, AVG(F.co2_mass_g_s), AVG(F.nox_mass_g_s), AVG(F.power_kw), AVG(F.speed_km_h)
-FROM acquisition_fact_particles P, acquisition_fact_general G
-WHERE P.row_id = G.row_id
-GROUP BY F.test_id
-\end{lstlisting}
-
+\lstinputlisting[language=mySQL]{./sources/sql/M2.sql}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -370,17 +304,9 @@ GROUP BY F.test_id
 \subsubsection{Media e deviazione standard delle temperature}
 Inversamente allo scopo della query proposta precedentemente, in questo caso si vuole misurare lo speedup raggiungibile grazie ad un buon partizionamento. Per questo motivo l'interrogazione richiede informazioni di una stessa categoria, memorizzate su di una tabella dedicata alle acquisizioni effettuate dall'Engine Control Unit (ECU).
 \subsubsection{Interrogazione sull'intero dataset}
-\begin{lstlisting}[language=mySQL]
-SELECT F.test_id, AVG(F.engine_coolant_temperature_by_ecu_degc), STDDEV(F.engine_coolant_temperature_by_ecu_degc), AVG(F.ambient_air_temperature_by_ecu_degc), STDDEV(F.ambient_air_temperature_by_ecu_degc), AVG(F.engine_oil_temperature_by_ecu_degc), STDDEV(F.engine_oil_temperature_by_ecu_degc)
-FROM acquisition_fact F
-GROUP BY F.test_id
-\end{lstlisting}
+\lstinputlisting[language=mySQL]{./sources/sql/T1.sql}
 \subsubsection{Interrogazione su tabella ECU}
-\begin{lstlisting}[language=mySQL]
-SELECT E.test_id, AVG(E.engine_coolant_temperature_by_ecu_degc), STDDEV(E.engine_coolant_temperature_by_ecu_degc), AVG(E.ambient_air_temperature_by_ecu_degc), STDDEV(E.ambient_air_temperature_by_ecu_degc), AVG(E.engine_oil_temperature_by_ecu_degc), STDDEV(E.engine_oil_temperature_by_ecu_degc)
-FROM acquisition_fact_ecu E
-GROUP BY E.test_id
-\end{lstlisting}
+\lstinputlisting[language=mySQL]{./sources/sql/T2.sql}
 
 \begin{table}[H]
 	\centering
@@ -414,4 +340,4 @@ GROUP BY E.test_id
 		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
 		
 	\end{tabular}
-\end{table}	
+\end{table}

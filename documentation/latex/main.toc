@@ -70,6 +70,22 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {chapter}{\numberline {3}Conclusioni}{16}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Sorgenti Java}{17}{appendix.Alph1}
+\contentsline {chapter}{\numberline {A}Sorgenti Java}{18}{appendix.Alph1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {B}Sorgenti SQL}{18}{appendix.Alph2}
+\contentsline {subsubsection}{Main.java}{18}{subsubsection*.15}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Multiplier.java}{22}{subsubsection*.16}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Cleaner.java}{23}{subsubsection*.17}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Transformer.java}{27}{subsubsection*.18}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {B}Sorgenti SQL}{31}{appendix.Alph2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{createFunction.sql}{31}{subsubsection*.19}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{createFunctionPart.sql}{36}{subsubsection*.20}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{createTable.sql}{43}{subsubsection*.21}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{createTablePart.sql}{48}{subsubsection*.22}
