@@ -79,10 +79,8 @@ La procedura ETL sviluppata si compone di differenti passaggi descritti nella se
 \noindent{}Per righe inconsistenti si intendono tutte quelle righe ove per valori indicanti volumi e/o concentrazioni vi sono valori negativi; inoltre viene dedotta la distanza percorsa ove mancante sfruttando la distanza percorsa e le velocità istantanee rilevate negli istanti precedenti.
 
 \section{Viste Materializzate}
-Sono state create le seguenti viste materializzate al fine di implementare efficacemente le query \textbf{C} ed \textbf{E}.
-\\
-Il primo frammento dichiara una vista contenente per ogni corsa (\textit{test\_id}) il carburante consumato suddiviso per fasce di velocità.
+Sono state create le seguenti viste materializzate al fine di implementare efficacemente le query \textbf{C} ed \textbf{E}. Il primo frammento dichiara una vista contenente per ogni corsa (\textit{test\_id}) il carburante consumato suddiviso per fasce di velocità.
 \lstinputlisting[language=mySQL]{./sources/sql/view_speed.sql}
 
-\noindent{}L'estratto a seguire serve a calcolare una vista materializzata riportante l'efficienza dell'auto nelle diverse corse. I risultati sono stati distribuiti su 3 fasce di rotazioni per minuto (RPM).
+\noindent{}L'estratto a seguire serve a calcolare una vista materializzata riportante l'efficienza dell'auto nelle diverse corse. I risultati sono stati distribuiti su 3 RPM.
 \lstinputlisting[language=mySQL]{./sources/sql/view_rpm.sql}
