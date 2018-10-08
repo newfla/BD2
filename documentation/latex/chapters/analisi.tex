@@ -43,7 +43,7 @@ I dati ottenuti si riferiscono ad una media aritmetica ottenuta testando 200 fil
 \end{tabular}
 \end{table}
 
-Questa fase mette in luce la buona qualità dei dati forniti dall'istituto: ci si aspetta in media di perdere pochissimi dati a causa di inconsistenze. Per quanto riguarda invece le dimensioni si nota come il formato Comma-separated values sia leggermente meno efficiente nella compressione rispetto al formato proprietario di Microsoft$^{\tiny{\textregistered}}$ ma al tempo stesso permetta una più veloce elaborazione.
+\noindent{}Questa fase mette in luce la buona qualità dei dati forniti dall'istituto: ci si aspetta in media di perdere pochissimi dati a causa di inconsistenze. Per quanto riguarda invece le dimensioni si nota come il formato Comma-separated values sia leggermente meno efficiente nella compressione rispetto al formato proprietario di Microsoft$^{\tiny{\textregistered}}$ ma al tempo stesso permetta una più veloce elaborazione.
 
 \subsection{Import in Tabella Temporanea}
 Al fine di importare i file CSV nella tabella dei fatti ci si appoggia ad una tabella temporanea al fine di agevolare le operazioni successive. Questa tabella viene troncata alla fine della procedura. L'import sfrutta la funzione \textit{COPY} messa a disposizione dal DBMS PostgreSQL.
@@ -70,7 +70,7 @@ Al fine di importare i file CSV nella tabella dei fatti ci si appoggia ad una ta
 	\end{tabular}
 \caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}	
-I risultati mostrano la bontà della funzione \textit{COPY} che sfruttando un inserimento batch di 1000 righe per volta riesce ad abbattere in modo consistente i tempi.
+\noindent{}I risultati mostrano la bontà della funzione \textit{COPY} che sfruttando un inserimento batch di 1000 righe per volta riesce ad abbattere in modo consistente i tempi.
 
 \subsection{Import nello Schema}
 In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengono travasati nello schema proposto dopo aver disabilitato tutti gli indici. Le prove effettuate prendono in considerazione diverse dimensioni della tabella dei fatti oltre al caso in cui lo schema risulti partizionato.
@@ -116,7 +116,7 @@ In questa fase i dati, precedentemente inseriti in una tabella temporanea, vengo
 	\end{tabular}
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}	
-Dalla tabella emerge come il partizionamento comporti quasi un raddoppio del tempo necessario all'inserimento: ciò è dovuto al dover spalmare un singolo record della tabella temporanea su 4 differenti tabelle. Questo slow-down è risolvibile pensando a 4 inserimenti in parallelo: infatti le 4 tabelle, anche se logicamente collegate, durante l'inserimento non necessitano di condividere alcuna informazione.
+\noindent{}Dalla tabella emerge come il partizionamento comporti quasi un raddoppio del tempo necessario all'inserimento: ciò è dovuto al dover spalmare un singolo record della tabella temporanea su 4 differenti tabelle. Questo slow-down è risolvibile pensando a 4 inserimenti in parallelo: infatti le 4 tabelle, anche se logicamente collegate, durante l'inserimento non necessitano di condividere alcuna informazione.
 
 \subsection{Aggiornamento degli Indici}
 In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti e dimensioni. Questi indici sono assolutamente necessari per velocizzare le query ma possono essere disabilitati durante la fase di update dello schema.
@@ -160,10 +160,10 @@ In questa fase vengono riattivati gli indici delle chiavi tra tabella dei fatti 
 	\end{tabular}
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}	
-Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
+\noindent{}Dai dati sopra mostrati emerge ancora una volta come l'introduzione di un partizionamento verticale comporti un notevole rallentamento. In particolare la forbice tra i tempi registrati aumenta all'aumentare della dimensione dei fatti. Ciò induce a pensare attentamente all'introduzione di un partizionamento in fase di progettazione valutando il rapporto costo/benefici.
 
 \subsection{Aggiornamento delle Viste Materializzate}
-A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per velocizzare le query \textbf{E} ed \textbf{M}.
+A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento delle viste materializzate utilizzate per analizzare le query \textbf{E} ed \textbf{M}.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{ccc}
@@ -191,7 +191,7 @@ A valle dell'inserimento dei nuovi record si rende necessario l'aggiornamento de
 	\end{tabular}
 	\caption{I dati si riferiscono ad una media di 5 esecuzioni}
 \end{table}
-I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
+\noindent{}I tempi osservati mostrano come un raddoppio del numero di record comporti un più che raddoppio del tempo necessario all'aggiornamento delle viste. Notevole è infatti l'incremento di tempo per materializzare la vista con 1.141.200 record: 2.5 volte quello necessario per materializzare la vista con la metà dei record. 
 \section{Prestazioni Query}
 In questa sezione verranno analizzate le query implementate nelle differenti implementazioni e presentati gli snippet di codice SQL
 
