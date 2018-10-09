@@ -204,6 +204,14 @@ A seguire sono proposte due diverse formulazioni della stessa interrogazione. Il
 \lstinputlisting[language=mySQL]{./sources/sql/I2.sql}
 \subsubsection{Esito}
 L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità per una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
+\newpage
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\linewidth]{figures/query_I}
+	\caption{Confronto tempi di esecuzione query I}
+	\label{fig:queryi}
+\end{figure}
+\noindent{}Dal grafico \ref{fig:queryi} si può osservare come, al variare della dimensione del dataset, il tempo dell'interrogazione che non sfrutta la gerarchia si mantiene, seppur di poco, sempre al di sotto dell'interrogazione con gerarchia. Il che è un campanello d'allarme sull'adeguatezza della gerarchia definita.
 
 \subsection{Query C}
 \subsubsection{Consumo medio per intervalli di velocità prefissati}

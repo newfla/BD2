@@ -58,34 +58,34 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{Senza partizionamento}{13}{subsubsection*.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Con partizionamento}{13}{subsubsection*.11}
+\contentsline {subsubsection}{Con partizionamento}{14}{subsubsection*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.5}Query T}{13}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.5}Query T}{14}{subsection.2.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Media e deviazione standard delle temperature}{13}{subsubsection*.12}
+\contentsline {subsubsection}{Media e deviazione standard delle temperature}{14}{subsubsection*.12}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{Interrogazione sull'intero dataset}{14}{subsubsection*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Interrogazione su tabella ECU}{14}{subsubsection*.14}
+\contentsline {subsubsection}{Interrogazione su tabella ECU}{15}{subsubsection*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Conclusioni}{15}{chapter.3}
+\contentsline {chapter}{\numberline {3}Conclusioni}{16}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Sorgenti Java}{17}{appendix.Alph1}
+\contentsline {chapter}{\numberline {A}Sorgenti Java}{18}{appendix.Alph1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Main.java}{17}{subsubsection*.15}
+\contentsline {subsubsection}{Main.java}{18}{subsubsection*.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Multiplier.java}{21}{subsubsection*.16}
+\contentsline {subsubsection}{Multiplier.java}{22}{subsubsection*.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Cleaner.java}{22}{subsubsection*.17}
+\contentsline {subsubsection}{Cleaner.java}{23}{subsubsection*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Transformer.java}{26}{subsubsection*.18}
+\contentsline {subsubsection}{Transformer.java}{27}{subsubsection*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {B}Sorgenti SQL}{30}{appendix.Alph2}
+\contentsline {chapter}{\numberline {B}Sorgenti SQL}{31}{appendix.Alph2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createFunction.sql}{30}{subsubsection*.19}
+\contentsline {subsubsection}{createFunction.sql}{31}{subsubsection*.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createFunctionPart.sql}{35}{subsubsection*.20}
+\contentsline {subsubsection}{createFunctionPart.sql}{36}{subsubsection*.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createTable.sql}{42}{subsubsection*.21}
+\contentsline {subsubsection}{createTable.sql}{43}{subsubsection*.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{createTablePart.sql}{47}{subsubsection*.22}
+\contentsline {subsubsection}{createTablePart.sql}{48}{subsubsection*.22}
