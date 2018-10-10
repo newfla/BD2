@@ -203,16 +203,15 @@ A seguire sono proposte due diverse formulazioni della stessa interrogazione. Il
 \subsubsection{Roll-up implicito}
 \lstinputlisting[language=mySQL]{./sources/sql/I2.sql}
 \subsubsection{Esito}
-L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità per una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.
-\newpage
+L'estrazione dei tempi di esecuzione delle due query può fornire una misura di utilità per una dimensione. In questo caso è interessante notare come un \textit{fatto} possa essere ricondotto alla sua dimensione di appartenenza attraverso un calcolo richiedente 2 operazioni elementari.\\
+\noindent{}Dal grafico \ref{fig:queryi} si può osservare come, al variare della dimensione del dataset, il tempo dell'interrogazione che non sfrutta la gerarchia si mantiene, seppur di poco, sempre al di sotto dell'interrogazione con gerarchia, il che è un campanello d'allarme sull'adeguatezza della gerarchia definita.
 \begin{figure}
 	\centering
 	\includegraphics[width=1.0\linewidth]{figures/query_I}
-	\caption{Confronto tempi di esecuzione query I}
+	\caption{Query I - i tempi di calcolo sono molto simili. Tuttavia la formulazione senza gerarchia è più efficiente su qualsiasi dimensione. Ciò è dovuto alla semplicità con cui si può calcolare a run-time il raggruppamento su di un livello di granularità della gerarchia scelta}
 	\label{fig:queryi}
 \end{figure}
-\noindent{}Dal grafico \ref{fig:queryi} si può osservare come, al variare della dimensione del dataset, il tempo dell'interrogazione che non sfrutta la gerarchia si mantiene, seppur di poco, sempre al di sotto dell'interrogazione con gerarchia. Il che è un campanello d'allarme sull'adeguatezza della gerarchia definita.
-
+\newpage
 \subsection{Query C}
 \subsubsection{Consumo medio per intervalli di velocità prefissati}
 L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzione della query fino a un trecentesimo: in questo modo il costo di aggiornamento della vista viene immediatamente ammortizzato.
@@ -239,6 +238,7 @@ L'utilizzo della vista materializzata permette di abbattere i tempi di esecuzion
 \caption{Test effettuati su schema non partizionato}
 \end{table}
 \lstinputlisting[language=mySQL]{./sources/sql/C.sql}
+\newpage
 \subsection{Query E}
 \subsubsection{Efficienza dell'auto per intervalli di RPM}
 Si conferma quanto osservato nel caso della query \textbf{C}: utilizzare una vista materializzata permette di abbattere i tempi di esecuzione della query e il costo del refresh risulta ampiamente ammortizzato.
@@ -266,86 +266,36 @@ Si conferma quanto osservato nel caso della query \textbf{C}: utilizzare una vis
 \caption{Test effettuati su schema non partizionato}
 \end{table}
 \lstinputlisting[language=mySQL]{./sources/sql/E.sql}
-\subsection{Query M}
+\newpage
+\subsection{Query M} \label{sec:m}
 \subsubsection{Per ogni test, media di NOx, CO2, Potenza e Velocità}
 Questa interrogazione è stata formulata per analizzare le performance del sistema in condizioni sconvenienti. Più precisamente, si intende osservare il calo di prestazioni dovuto all'overhead necessario alla ricostruzione dell'informazione a partire dalle tabelle partizionate. Si intende quindi operare su 4 colonne distribuite su 2 tabelle ottenute dal partizionamento verticale illustrato nella sezione ~\ref{sec:diagrams}.
+
 \subsubsection{Senza partizionamento}
 \lstinputlisting[language=mySQL]{./sources/sql/M1.sql}
 \subsubsection{Con partizionamento}
 \lstinputlisting[language=mySQL]{./sources/sql/M2.sql}
-\begin{table}[H]
+\subsubsection{Esito}
+I risultati ottenuti (esposti in figura \ref{fig:querym}) mostrano come un partizionamento ha degli scenari in cui risulta certamente sconveniente, rispetto alla memorizzazione in un'unica tabella. Ciò sottolinea l'importanza della scelta di un buon partizionamento, in fase progettuale, che non prescinde dal set di query che si intende fornire.
+\begin{figure}
 	\centering
-	\begin{tabular}{ccc}
-		\rowcolor[HTML]{333333} 
-		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
-		&
-		{\color[HTML]{FFFFFF}Partizionamento}
-		&
-		{\color[HTML]{FFFFFF}Tempo}\\
-		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}6,194s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}24,715s\end{tabular}\\
-		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}16,903s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}67,469s\end{tabular}\\
-		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}24,141s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
-		
-	\end{tabular}
-\end{table}
-
-
+	\includegraphics[width=1.0\linewidth]{figures/query_M}
+	\caption{Query M - il tempo di ricostruzione dell'informazione attraverso il partizionamento porta al raddoppio del tempo di risposta. Il divario sembra essere costante rispetto alla dimensione del dataset}
+	\label{fig:querym}
+\end{figure}
+\newpage
 \subsection{Query T}
 \subsubsection{Media e deviazione standard delle temperature}
-Inversamente allo scopo della query proposta precedentemente, in questo caso si vuole misurare lo speedup raggiungibile grazie ad un buon partizionamento. Per questo motivo l'interrogazione richiede informazioni di una stessa categoria, memorizzate su di una tabella dedicata alle acquisizioni effettuate dall'Engine Control Unit (ECU).
+Inversamente allo scopo della query proposta precedentemente, in questo caso si vuole misurare lo speedup raggiungibile grazie ad un buon partizionamento. Per questo motivo un'interrogazione richiede informazioni di una stessa categoria, memorizzate su di una tabella dedicata alle acquisizioni effettuate dall'Engine Control Unit (ECU), mettendo a confronto i tempi di risposta con un'interrogazione equivalente, che opera sull'intero dataset.
 \subsubsection{Interrogazione sull'intero dataset}
 \lstinputlisting[language=mySQL]{./sources/sql/T1.sql}
 \subsubsection{Interrogazione su tabella ECU}
 \lstinputlisting[language=mySQL]{./sources/sql/T2.sql}
-
-\begin{table}[H]
+\subsubsection{Esito}
+Come previsto, le prestazioni ottenute si sono invertite rispetto all'esperimento in \ref{sec:m}. Si ha quindi un notevole risparmio di tempo risolvendo un'interrogazione che richiede informazioni presenti in un'unico partizionamento. 
+\begin{figure}
 	\centering
-	\begin{tabular}{ccc}
-		\rowcolor[HTML]{333333} 
-		{\color[HTML]{FFFFFF}Dimensione tab. fatti}
-		&
-		{\color[HTML]{FFFFFF}Partizionamento}
-		&
-		{\color[HTML]{FFFFFF}Tempo}\\
-		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}6,194s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}570.600\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}24,715s\end{tabular}\\
-		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}16,903s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}1.141.200\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}67,469s\end{tabular}\\
-		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}No\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}24,141s\end{tabular}\\
-		\rowcolor[HTML]{C0C0C0}
-		\begin{tabular}[c]{@{}l@{}}1.426.500\end{tabular}              
-		& \begin{tabular}[c]{@{}l@{}}Si\end{tabular}
-		& \begin{tabular}[c]{@{}l@{}}98,218s\end{tabular}
-		
-	\end{tabular}
-\end{table}
+	\includegraphics[width=1.0\linewidth]{figures/query_T}
+	\caption{Query T - la formulazione che opera sulla partizione risparmia quasi il doppio del tempo grazie al carico minore di dati}
+	\label{fig:queryt}
+\end{figure}
