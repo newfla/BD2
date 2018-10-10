@@ -34,7 +34,7 @@ Di seguito è riportato il diagramma UML che rappresenta lo schema dei fatti imp
 È stata inoltre progettata e implementata una variante dello schema proposto che sfrutta la tecnica del partizionamento verticale ovvero la possibilità di dividere la tabella dei fatti in più tabelle, ognuna delle quali rappresenta una particolare sfaccettatura del \textit{fatto}. Il partizionamento viene solitamente adoperato per agevolare quelle interrogazioni che riguardano solo una particolare area di interesse. Per poter applicare questa tecnica è necessario aggiungere una chiave tra le tabelle al fine di poterle ricongiungere per analizzare il dato nella sua completezza.
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{figures/class_fact_scheme_part} %TODO cambiare diagaramma
+	\includegraphics[scale=0.8]{figures/class_fact_scheme_part} 
 	\caption{Diagramma UML schema dei fatti partizionato verticalmente}
 	\label{fig:ofm}
 \end{figure}
@@ -82,5 +82,5 @@ La procedura ETL sviluppata si compone di differenti passaggi descritti nella se
 Sono state create le seguenti viste materializzate al fine di implementare efficacemente le query \textbf{C} ed \textbf{E}. Il primo frammento dichiara una vista contenente per ogni corsa (\textit{test\_id}) il carburante consumato suddiviso per fasce di velocità.
 \lstinputlisting[language=mySQL]{./sources/sql/view_speed.sql}
 
-\noindent{}L'estratto a seguire serve a calcolare una vista materializzata riportante l'efficienza dell'auto nelle diverse corse. I risultati sono stati distribuiti su 3 RPM.
+\noindent{}L'estratto a seguire serve a calcolare una vista materializzata riportante l'efficienza dell'auto nelle diverse corse. I risultati sono stati distribuiti su 3 intervalli di RPM.
 \lstinputlisting[language=mySQL]{./sources/sql/view_rpm.sql}
