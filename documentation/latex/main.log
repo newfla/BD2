@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.8.27)  10 OCT 2018 19:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.8.27)  13 OCT 2018 20:00
 entering extended mode
 **./main.tex
 (main.tex
@@ -1127,15 +1127,15 @@ Capitolo 1.
 
 ]
 LaTeX Font Info:    Try loading font information for U+fontawesometwo on input 
-line 10.
+line 11.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\fontawesome\ufontawesometwo.fd"
 File: ufontawesometwo.fd 2016/05/22 Font definitions for U/fontawesometwo.
 )
-<figures/class_fact_scheme.pdf, id=167, 383.18156pt x 545.78906pt>
+<figures/class_fact_scheme.pdf, id=166, 383.18156pt x 545.78906pt>
 File: figures/class_fact_scheme.pdf Graphic file (type pdf)
 
 <use figures/class_fact_scheme.pdf>
-Package pdftex.def Info: figures/class_fact_scheme.pdf used on input line 29.
+Package pdftex.def Info: figures/class_fact_scheme.pdf used on input line 28.
 (pdftex.def)             Requested size: 306.54565pt x 436.63184pt.
 
 
@@ -1144,19 +1144,19 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2] <figures/class_fact_scheme_part.pdf, id=174, 461.47406pt x 784.43062pt>
+[2] <figures/class_fact_scheme_part.pdf, id=173, 461.47406pt x 784.43062pt>
 File: figures/class_fact_scheme_part.pdf Graphic file (type pdf)
 
 <use figures/class_fact_scheme_part.pdf>
 Package pdftex.def Info: figures/class_fact_scheme_part.pdf used on input line 
-37.
+36.
 (pdftex.def)             Requested size: 369.17973pt x 627.54535pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3 <./figures/class_fact_scheme.pdf>] [4 <./figures/class_fact_scheme_part.pdf
 >]
-Overfull \hbox (1.83498pt too wide) in paragraph at lines 47--78
+Overfull \hbox (1.83498pt too wide) in paragraph at lines 46--77
  [][] 
  []
 
@@ -1164,7 +1164,7 @@ Overfull \hbox (1.83498pt too wide) in paragraph at lines 47--78
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 83.
+nput line 82.
 
 (sources/sql/view_speed.sql [5]) (sources/sql/view_rpm.sql)) [6]
 \openout2 = `./chapters/analisi.aux'.
@@ -1199,7 +1199,7 @@ LaTeX Warning: Command \textcircled invalid in math mode on input line 46.
 
 pdfTeX warning: pdflatex.exe (file ./figures/query_I.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<figures/query_I.pdf, id=315, 845.07724pt x 597.55246pt>
+<figures/query_I.pdf, id=314, 845.07724pt x 597.55246pt>
 File: figures/query_I.pdf Graphic file (type pdf)
 
 <use figures/query_I.pdf>
@@ -1210,7 +1210,7 @@ Package pdftex.def Info: figures/query_I.pdf used on input line 210.
 
 pdfTeX warning: pdflatex.exe (file ./figures/query_M.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<figures/query_M.pdf, id=402, 845.07724pt x 597.55246pt>
+<figures/query_M.pdf, id=401, 845.07724pt x 597.55246pt>
 File: figures/query_M.pdf Graphic file (type pdf)
 
 <use figures/query_M.pdf>
@@ -1220,7 +1220,7 @@ Package pdftex.def Info: figures/query_M.pdf used on input line 282.
 
 pdfTeX warning: pdflatex.exe (file ./figures/query_T.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<figures/query_T.pdf, id=435, 845.07724pt x 597.55246pt>
+<figures/query_T.pdf, id=434, 845.07724pt x 597.55246pt>
 File: figures/query_T.pdf Graphic file (type pdf)
 
 <use figures/query_T.pdf>
@@ -1418,11 +1418,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  20148 strings out of 493328
  307048 string characters out of 3136532
- 609537 words of memory out of 3000000
+ 609517 words of memory out of 3000000
  21845 multiletter control sequences out of 15000+200000
  12838 words of font info for 48 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 47i,18n,54p,789b,3075s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 47i,18n,54p,789b,3071s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontawesome/fontawesometwo.enc}<
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/fontawesome/FontAwesome.pfb><C:/
 Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program 
@@ -1434,9 +1434,9 @@ c/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmt
 i12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
 
-Output written on main.pdf (58 pages, 1557439 bytes).
+Output written on main.pdf (58 pages, 1557243 bytes).
 PDF statistics:
- 2235 PDF objects out of 2487 (max. 8388607)
+ 2234 PDF objects out of 2487 (max. 8388607)
  1486 named destinations out of 1728 (max. 500000)
  215 words of extra memory for PDF output out of 10000 (max. 10000000)
 

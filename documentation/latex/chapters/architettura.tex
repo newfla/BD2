@@ -2,24 +2,23 @@
 In questa capitolo sono esposte le scelte progettuali usate come linee guida per l'implementazione di una base di dati orientata al data warehousing.
 \newpage
 \section{Interrogazioni}
-Nella tabella \ref{table:query} sono riportate le query che si intende sottoporre al sistema. Per ognuna di esse si è associato un numero identificativo ed una descrizione dell'analisi che si intende effettuare.
+Nella tabella sottostante sono riportate le query che si intende sottoporre al sistema. Per ognuna di esse si è associato un identificativo ed una descrizione dell'analisi che si intende effettuare. Le interrogazioni hanno guidato lo sviluppo del sistema in ogni sua fase e hanno permesso di sperimentare differenti tecniche di implementazione di un sistema ROLAP.
+Una definizione formale delle stesse in linguaggio SQL sarà presentata più avanti nel corso di questo documento.
 \begin{table}[h]
 	\centering
-\begin{tabular}{cll}
-	\rowcolor[HTML]{333333} 
-	{\color[HTML]{FFFFFF} {\small \faKey\par}} & {\color[HTML]{FFFFFF} Query}                                                                                       & {\color[HTML]{FFFFFF} Obiettivo}                                                                                                                                                                                                                   \\
-	I                         & \begin{tabular}[c]{@{}l@{}}Impatto ambientale medio in corse\\ da 5 km (CO2 e NOx, massa)\end{tabular}             & \begin{tabular}[c]{@{}l@{}}Pensata per analizzare varianti della\\ stessa interrogazione su diversi livelli\\ di granularità\end{tabular}                                                                                                          \\
-	\rowcolor[HTML]{C0C0C0} 
-	C                         & \begin{tabular}[c]{@{}l@{}}Consumo medio per intervalli di\\ velocità prefissati, su tutto il dataset\end{tabular} & \begin{tabular}[c]{@{}l@{}}Utile all'implementazione e l'analisi\\ di viste materializzate che\\ raggruppano i dati secondo delle \\ fasce di velocità. Le fasce scelte, \\ espresse in km/h, sono le seguenti:\\ 0-50, 50-90, 90-130\end{tabular} \\
-	E                         & \begin{tabular}[c]{@{}l@{}}Efficienza dell'auto per intervalli\\ di RPM (rotazioni per minuto)\end{tabular}        & \begin{tabular}[c]{@{}l@{}}Altra interessante interrogazione\\ creata allo scopo di sfruttare le\\ viste materializzate. Il dataset \\ fornisce tutti i parametri \\ necessari al calcolo dell'efficienza, \\ o rendimento istantaneo\end{tabular} \\
-	\rowcolor[HTML]{C0C0C0} 
-	M                         & \begin{tabular}[c]{@{}l@{}}Per ogni test, media di NOx,\\ CO2, Potenza e Velocità\end{tabular}                     & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a\\ valutare le prestazioni ottenute\\ dall'esecuzione su di un \\ partizionamento verticale con le\\ colonne sparse tra più tabelle\end{tabular}                                            \\
-	T                         & \begin{tabular}[c]{@{}l@{}}Media e deviazione standard\\ delle temperature\end{tabular}                            & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a \\ valutare le prestazioni ottenute\\ dall'esecuzione con le colonne \\ concentrate su di un unica\\ tabella restituita da un\\ partizionamento verticale\end{tabular}                    
-\end{tabular}
-\label{table:query}
+	\begin{tabular}{cll}
+		\rowcolor[HTML]{333333} 
+		{\color[HTML]{FFFFFF} {\small \faKey\par}} & {\color[HTML]{FFFFFF} Query}                                                                                       & {\color[HTML]{FFFFFF} Obiettivo}                                                                                                                                                                                                                   \\
+		I                         & \begin{tabular}[c]{@{}l@{}}Impatto ambientale medio in corse\\ da 5 km (CO2 e NOx, massa)\end{tabular}             & \begin{tabular}[c]{@{}l@{}}Pensata per analizzare varianti della\\ stessa interrogazione su diversi livelli\\ di granularità\end{tabular}                                                                                                          \\
+		\rowcolor[HTML]{C0C0C0} 
+		C                         & \begin{tabular}[c]{@{}l@{}}Consumo medio per intervalli di\\ velocità prefissati, su tutto il dataset\end{tabular} & \begin{tabular}[c]{@{}l@{}}Utile all'implementazione e l'analisi\\ di viste materializzate che\\ raggruppano i dati secondo delle \\ fasce di velocità. Le fasce scelte, \\ espresse in km/h, sono le seguenti:\\ 0-50, 50-90, 90-130\end{tabular} \\
+		E                         & \begin{tabular}[c]{@{}l@{}}Efficienza dell'auto per intervalli\\ di RPM (rotazioni per minuto)\end{tabular}        & \begin{tabular}[c]{@{}l@{}}Altra interessante interrogazione\\ creata allo scopo di sfruttare le\\ viste materializzate. Il dataset \\ fornisce tutti i parametri \\ necessari al calcolo dell'efficienza, \\ o rendimento istantaneo\end{tabular} \\
+		\rowcolor[HTML]{C0C0C0} 
+		M                         & \begin{tabular}[c]{@{}l@{}}Per ogni test, media di NOx,\\ CO2, Potenza e Velocità\end{tabular}                     & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a\\ valutare le prestazioni ottenute\\ dall'esecuzione su di un \\ partizionamento verticale con le\\ colonne sparse tra più tabelle\end{tabular}                                            \\
+		T                         & \begin{tabular}[c]{@{}l@{}}Media e deviazione standard\\ delle temperature\end{tabular}                            & \begin{tabular}[c]{@{}l@{}}Quest'interrogazione serve a \\ valutare le prestazioni ottenute\\ dall'esecuzione con le colonne \\ concentrate su di un unica\\ tabella restituita da un\\ partizionamento verticale\end{tabular}                    
+	\end{tabular}
+	\label{table:query}
 \end{table}
-Le interrogazioni hanno guidato lo sviluppo del sistema in ogni sua fase e hanno permesso di sperimentare differenti tecniche di implementazione di un sistema ROLAP.
-Una definizione formale delle stesse in linguaggio SQL sarà presentata più avanti nel corso di questo documento.
 
 \section{Diagrammi} \label{sec:diagrams}
 \subsection{Schema Principale}
